@@ -1,5 +1,6 @@
 import 'package:config_generator/MainPage.dart';
 import 'package:config_generator/inputs_page.dart';
+import 'package:config_generator/login_page.dart';
 import 'package:flutter/material.dart';
 
 // if not using comment the below line to
@@ -20,11 +21,12 @@ void main() {
         primaryColor: Colors.blue[100],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Landing(),
+      home: LoginPage(),
     ),
   );
 }
 
+// to start the login, set - home: LoginPage()
 // to start the app, set - home: Landing()
 // to start the inputs, set - home: Inputs_page()
 // to start the testing_page, set - home: TestClass() or Testing()

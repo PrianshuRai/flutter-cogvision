@@ -103,9 +103,6 @@ class _ConfigsState extends State<Configs> {
             ),
           ),
           obscureText: false,
-          onSaved: (String? value) {
-            formData['user'] = value;
-          },
         ),
         TextFormField(
           controller: _ip,
@@ -127,9 +124,6 @@ class _ConfigsState extends State<Configs> {
               ),
             ),
           ),
-          onSaved: (String? value) {
-            formData['ip'] = value;
-          },
         ),
         TextFormField(
           controller: _port,
@@ -151,9 +145,6 @@ class _ConfigsState extends State<Configs> {
               ),
             ),
           ),
-          onSaved: (String? value) {
-            formData['port'] = value;
-          },
         ),
         TextFormField(
           controller: _mask,
@@ -175,9 +166,6 @@ class _ConfigsState extends State<Configs> {
               ),
             ),
           ),
-          onSaved: (String? value) {
-            formData['netmask'] = value;
-          },
         ),
         TextFormField(
           controller: _inter,
@@ -199,9 +187,6 @@ class _ConfigsState extends State<Configs> {
               ),
             ),
           ),
-          onSaved: (String? value) {
-            formData['interface'] = value;
-          },
         ),
         TextFormField(
           controller: _sys,
@@ -223,9 +208,6 @@ class _ConfigsState extends State<Configs> {
               ),
             ),
           ),
-          onSaved: (String? value) {
-            formData['syspassword'] = value;
-          },
         ),
         TextFormField(
           controller: _serv,
@@ -247,9 +229,6 @@ class _ConfigsState extends State<Configs> {
               ),
             ),
           ),
-          onSaved: (String? value) {
-            formData['management_server_ip'] = value;
-          },
         ),
         TextFormField(
           controller: _gate,
@@ -271,9 +250,6 @@ class _ConfigsState extends State<Configs> {
               ),
             ),
           ),
-          onSaved: (String? value) {
-            formData['gateway'] = value;
-          },
         ),
         TextFormField(
           controller: _mac,
@@ -295,9 +271,6 @@ class _ConfigsState extends State<Configs> {
               ),
             ),
           ),
-          onSaved: (String? value) {
-            formData['mac_id'] = value;
-          },
         ),
         TextFormField(
           controller: _sts,
@@ -319,9 +292,6 @@ class _ConfigsState extends State<Configs> {
               ),
             ),
           ),
-          onSaved: (String? value) {
-            formData['status'] = value;
-          },
         ),
 
         // Add ElevatedButton here.
@@ -363,123 +333,17 @@ TextFormField inputs_field({String? txt1}) {
       fontSize: 22,
     ),
     decoration: InputDecoration(
-        labelText: '$txt1',
-        hintStyle: TextStyle(fontSize: 20),
-        // filled: true,
-        // fillColor: Colors.purple[50],
-        border: InputBorder.none,
-        labelStyle: TextStyle(
-          fontSize: 18,
-          color: Colors.grey,
-          fontWeight: FontWeight.w800,
-        )),
-    // onSaved: (String? value) {
-    //   formData['$txt1'] = value;
+      labelText: '$txt1',
+      hintStyle: TextStyle(fontSize: 20),
+      // filled: true,
+      // fillColor: Colors.purple[50],
+      border: InputBorder.none,
+      labelStyle: TextStyle(
+        fontSize: 18,
+        color: Colors.grey,
+        fontWeight: FontWeight.w800,
+      ),
+    ),
     // }, @TODO add onSaved function
   );
 }
-
-// '''
-// TextFormField(
-// decoration: const InputDecoration(
-// // icon: Icon(Icons.person),
-// labelText: 'User',
-// ),
-// validator: (String? value) {
-// return (value != null && value.contains('@'))
-// ? 'Do not use special characters'
-//     : null;
-// },
-// onSaved: (String? value) {
-// formData['user'] = value;
-// },
-// ),
-// TextFormField(
-// decoration: const InputDecoration(
-// // icon: Icon(Icons.person),
-// labelText: 'IP',
-// ),
-// onSaved: (String? value) {
-// formData['IP'] = value;
-// },
-// ),
-// TextFormField(
-// decoration: const InputDecoration(
-// // icon: Icon(Icons.person),
-// labelText: 'Port',
-// ),
-// onSaved: (String? value) {
-// formData['port'] = value;
-// },
-// validator: (String? value) {
-// return (value != null && value.contains(' '))
-// ? "Only ':' is allowed"
-//     : null;
-// },
-// ),
-// TextFormField(
-// decoration: const InputDecoration(
-// // icon: Icon(Icons.person),
-// labelText: 'Netmask',
-// ),
-// onSaved: (String? value) {
-// formData['netmask'] = value;
-// },
-// ),
-// TextFormField(
-// decoration: const InputDecoration(
-// // icon: Icon(Icons.person),
-// labelText: 'Interface',
-// ),
-// onSaved: (String? value) {
-// formData['interface'] = value;
-// },
-// ),
-// TextFormField(
-// decoration: const InputDecoration(
-// // icon: Icon(Icons.person),
-// labelText: 'System Password',
-// ),
-// onSaved: (String? value) {
-// formData['syspassword'] = value;
-// },
-//
-// // @TODO Make this a password field
-// ),
-// TextFormField(
-// decoration: const InputDecoration(
-// // icon: Icon(Icons.person),
-// labelText: 'Management Server IP',
-// ),
-// onSaved: (String? value) {
-// formData['management_server_ip'] = value;
-// },
-// ),
-// TextFormField(
-// decoration: const InputDecoration(
-// // icon: Icon(Icons.person),
-// labelText: 'Gateway',
-// ),
-// onSaved: (String? value) {
-// formData['gateway'] = value;
-// },
-// ),
-// TextFormField(
-// decoration: const InputDecoration(
-// // icon: Icon(Icons.person),
-// labelText: 'MAC ID',
-// ),
-// onSaved: (String? value) {
-// formData['mac_id'] = value;
-// },
-// ),
-// TextFormField(
-// decoration: const InputDecoration(
-// // icon: Icon(Icons.person),
-// labelText: 'Status',
-// ),
-// onSaved: (String? value) {
-// formData['status'] = value;
-// },
-// ),
-// '''

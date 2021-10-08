@@ -142,8 +142,11 @@ class Landing extends StatelessWidget {
                     child: InkWell(
                       splashColor: Colors.blue.withAlpha(30),
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Links()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PortalPage(
+                                    link: 'https://www.facebook.com/')));
                       },
                       child: Center(
                         child: Column(
@@ -387,63 +390,6 @@ class Landing extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class Links extends StatefulWidget {
-  const Links({Key? key}) : super(key: key);
-
-  @override
-  _LinksState createState() => _LinksState();
-}
-
-class _LinksState extends State<Links> {
-  String link = 'https://www.google.com';
-  TextEditingController _link = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Center(
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                controller: _link,
-                style: GoogleFonts.lato(
-                    textStyle: Theme.of(context).textTheme.headline6,
-                    color: Colors.blueGrey,
-                    fontWeight: FontWeight.w500),
-                decoration: InputDecoration(
-                  labelText: "Enter link",
-                  labelStyle: GoogleFonts.lato(
-                      textStyle: Theme.of(context).textTheme.bodyText2,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20),
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15.0),
-                    ),
-                  ),
-                ),
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    link = _link.text;
-                    print(link);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PortalPage(link: link)));
-                  },
-                  child: Icon(Icons.arrow_right))
-            ],
-          ),
         ),
       ),
     );
