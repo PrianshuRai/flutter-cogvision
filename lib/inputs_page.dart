@@ -1,12 +1,12 @@
 import 'dart:convert';
-
-// import 'package:permission_handler/permission_handler.dart';
-import 'dart:async';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
+
+// import 'package:permission_handler/permission_handler.dart';
+// import 'dart:async';
+// import 'dart:io';
+// import 'package:path_provider/path_provider.dart';
 
 class Inputs_page extends StatefulWidget {
   const Inputs_page({Key? key}) : super(key: key);
@@ -72,8 +72,6 @@ class _ConfigsState extends State<Configs> {
   TextEditingController _gate = TextEditingController();
   TextEditingController _mac = TextEditingController();
   TextEditingController _sts = TextEditingController();
-
-  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -323,27 +321,26 @@ class _ConfigsState extends State<Configs> {
   }
 }
 
-TextFormField inputs_field({String? txt1}) {
-  return TextFormField(
-    style: TextStyle(
-      fontFamily: 'Lato',
-      // fontStyle: 'Lato-Regular',
-      color: Colors.blue[200],
-      fontWeight: FontWeight.w400,
-      fontSize: 22,
-    ),
-    decoration: InputDecoration(
-      labelText: '$txt1',
-      hintStyle: TextStyle(fontSize: 20),
-      // filled: true,
-      // fillColor: Colors.purple[50],
-      border: InputBorder.none,
-      labelStyle: TextStyle(
-        fontSize: 18,
-        color: Colors.grey,
-        fontWeight: FontWeight.w800,
-      ),
-    ),
-    // }, @TODO add onSaved function
-  );
-}
+// TextField myTextField ({required String hint1, String? placeholder, TextEditingController? ctrl, required BuildContext contxt}) {
+//   return TextField(
+//     controller: ctrl,
+//     style: GoogleFonts.lato(
+//         textStyle: Theme.of(contxt).textTheme.headline6,
+//         color: Colors.blueGrey,
+//         fontWeight: FontWeight.w500),
+//     decoration: InputDecoration(
+//       labelText: hint1,
+//       labelStyle: GoogleFonts.lato(
+//           textStyle: Theme.of(contxt).textTheme.bodyText2,
+//           fontWeight: FontWeight.w600,
+//           fontSize: 20),
+//       filled: true,
+//       fillColor: Colors.white,
+//       border: const OutlineInputBorder(
+//         borderRadius: BorderRadius.all(
+//           Radius.circular(15.0),
+//         ),
+//       ),
+//     ),
+//   );
+// }
