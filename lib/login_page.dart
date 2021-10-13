@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:config_generator/network.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,6 +16,10 @@ class _LoginPageState extends State<LoginPage> {
   bool visible = true;
 
   final _globalKey = GlobalKey<FormState>();
+
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
+  GetData _api_call = GetData();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 TextFormField(
-                  // controller: ,
+                  controller: _email,
                   style: GoogleFonts.lato(
                       textStyle: Theme.of(context).textTheme.headline6,
                       color: Colors.blueGrey,
@@ -75,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                   height: 20,
                 ),
                 TextFormField(
-                  // controller: ,
+                  controller: _password,
                   obscureText: visible,
                   style: GoogleFonts.lato(
                       textStyle: Theme.of(context).textTheme.headline6,
@@ -131,10 +139,13 @@ class _LoginPageState extends State<LoginPage> {
                           content: Text('Processing Data'),
                         ),
                       );
-                      print('Validating');
+                      // _api_call.login();
                     } else {
-                      print('Error...');
+                      print('Error... unable to connect to API');
                     }
+                    _api_call.login();
+                    // GetData();
+                    // print("get data : $pr");
                   },
                 )
               ],
@@ -145,3 +156,38 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
+// interaction to API
+// class GetData extends LoginPage {
+//   static Future<dynamic> login() async {
+//     var params = {
+//       "program": "fire",
+//       "userId": "Prasad19f87",
+//       "startdate": "2021-05-11",
+//       "enddate": "2021-08-15",
+//       "cameraname": "",
+//       "deptCameras": ""
+//     };
+//
+//     String base_url = "http://192.168.1.8:5020/getAnalyticsAlertsBySummary";
+//     var response = await http.post(Uri.parse(base_url), body: {
+//       "program": "fire",
+//       "userId": "Prasad19f87",
+//       "startdate": "2021-05-11",
+//       "enddate": "2021-08-15",
+//       "cameraname": "",
+//       "deptCameras": ""
+//     });
+//     if (response.statusCode != null) {
+//       print(" inside conditon ${response} ${response.body}");
+//     } else {
+//       print("else conditon ${response} ${response.body}");
+//     }
+//
+//     // if (response.statusCode == HttpStatus.ok){
+//     print("Success");
+//     // }
+//     print('getting response: ${response.body}');
+//     return response.body;
+//   }
+// }

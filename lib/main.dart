@@ -1,14 +1,5 @@
-import 'package:config_generator/MainPage.dart';
-import 'package:config_generator/inputs_page.dart';
 import 'package:config_generator/login_page.dart';
 import 'package:flutter/material.dart';
-
-// if not using comment the below line to
-// prevent permission_handler error
-// import './test.dart';
-// import './new_test.dart';
-
-import './landingpage.dart';
 
 // import 'package:google_fonts/google_fonts.dart';
 
