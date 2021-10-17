@@ -1,10 +1,15 @@
 import 'dart:convert';
 
-import 'package:config_generator/network.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
+import 'main.dart';
+
+// this class contains all visual elements of
+// login page
+// functions are on separate page.
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -13,13 +18,54 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // value for password visibility on password input page
   bool visible = true;
 
+  // Sign-in form key for login page
   final _globalKey = GlobalKey<FormState>();
 
+  // user input values from email and password field
+  // this field should be stored as a map value
+  // and has to be passed through API
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
-  GetData _api_call = GetData();
+
+  // the user email and password are stored here
+  // this map is sent through API
+  Map<String, dynamic> params = {"username": null, "password": null};
+
+  Future<dynamic> login() async {
+    String base_url = "http://192.168.1.8:5020/users/login";
+    var response =
+        await http.post(Uri.parse(base_url), body: jsonEncode(params));
+
+    // verification of the response from the server
+    //
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      print(data.keys);
+      if (data.keys.length > 1) {
+        print('success');
+        try {
+          var unique_id = _getId();
+          params['id'] = unique_id;
+          loginStatus = true;
+        } catch (e) {
+          return "Error occured in getting id: $e";
+        }
+      } else {
+        print('response is 200 but either username or password is wrong');
+      }
+    } else if (response.statusCode == 500) {
+      print('username and password is not correct');
+    } else if (response.statusCode == 400) {
+      print('no data found');
+    }
+  }
+
+  // instance of GetData class from network.dart page
+  // here
+  // GetData _api_call = GetData();
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +119,8 @@ class _LoginPageState extends State<LoginPage> {
                     if (value.length < 9) {
                       return 'Something is wrong here';
                     }
-                    if (!value.contains('@') || !value.contains('.com')) {
+                    if (!value.contains('@') ||
+                        !value.contains('cogvision.ai')) {
                       return "Email is incorrect";
                     }
                     return null;
@@ -139,11 +186,12 @@ class _LoginPageState extends State<LoginPage> {
                           content: Text('Processing Data'),
                         ),
                       );
-                      // _api_call.login();
+                      params['email'] = _email.text.toLowerCase();
+                      params['password'] = _password.text;
+                      login();
                     } else {
                       print('Error... unable to connect to API');
                     }
-                    _api_call.login();
                     // GetData();
                     // print("get data : $pr");
                   },
@@ -155,6 +203,12 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+}
+
+Future<String?> _getId() async {
+  var deviceInfo = DeviceInfoPlugin();
+  var androidDeviceInfo = await deviceInfo.androidInfo;
+  return androidDeviceInfo.androidId; // unique ID on Android
 }
 
 // interaction to API

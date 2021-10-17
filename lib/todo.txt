@@ -1,0 +1,8 @@
+//@ TODO send username and password to api -- done
+//@ TODO get data from other point -- done
+//@ TODO filter out username and password is there or not -- done
+//@ TODO get android id and send userid password and android id to the other end
+//@ TODO if success navigate to landing page else give dialog to re-enter details
+//@ TODO make a global bool variable for signin value
+//@ TODO make bool check for the first screen to be landing page or signin page
+//@ TODO visual enhacements

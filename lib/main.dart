@@ -1,7 +1,10 @@
 import 'package:config_generator/login_page.dart';
 import 'package:flutter/material.dart';
 
+import 'landingpage.dart';
+
 // import 'package:google_fonts/google_fonts.dart';
+bool loginStatus = true;
 
 void main() {
   runApp(
@@ -12,7 +15,7 @@ void main() {
         primaryColor: Colors.blue[100],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LoginPage(),
+      home: loginStatus ? Landing() : LoginPage(),
     ),
   );
 }
