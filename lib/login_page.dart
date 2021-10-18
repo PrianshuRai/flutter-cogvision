@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
-import 'main.dart';
+// unique id of the device
+var device_id = _getId();
+bool loginStatus = false;
 
 // this class contains all visual elements of
 // login page
@@ -21,6 +23,9 @@ class _LoginPageState extends State<LoginPage> {
   // value for password visibility on password input page
   bool visible = true;
 
+  // loading indicator value
+  bool _isLoading = false;
+
   // Sign-in form key for login page
   final _globalKey = GlobalKey<FormState>();
 
@@ -32,34 +37,46 @@ class _LoginPageState extends State<LoginPage> {
 
   // the user email and password are stored here
   // this map is sent through API
-  Map<String, dynamic> params = {"username": null, "password": null};
+  Map<String, dynamic> params = {
+    "email": null,
+    "password": null,
+    "device_id": null
+  };
 
   Future<dynamic> login() async {
     String base_url = "http://192.168.1.8:5020/users/login";
     var response =
         await http.post(Uri.parse(base_url), body: jsonEncode(params));
+    print('params: $params');
+    print('response received: ${response.body}');
 
     // verification of the response from the server
     //
     if (response.statusCode == 200) {
+      setState(() {
+        _isLoading = true;
+      });
       Map<String, dynamic> data = jsonDecode(response.body);
       print(data.keys);
       if (data.keys.length > 1) {
         print('success');
+        loginStatus = true;
+        print("login status: $loginStatus");
+        setState(() {
+          _isLoading = false;
+        });
+        return "Successfully Logged-in";
+      } else if (data.keys.length <= 1) {
         try {
-          var unique_id = _getId();
-          params['id'] = unique_id;
-          loginStatus = true;
-        } catch (e) {
-          return "Error occured in getting id: $e";
+          print("status from other side: ${error_flag[data['error']]}");
+        } catch (error) {
+          print("some error occured: $error");
         }
-      } else {
-        print('response is 200 but either username or password is wrong');
       }
     } else if (response.statusCode == 500) {
-      print('username and password is not correct');
+      print("username and password is not correct");
     } else if (response.statusCode == 400) {
-      print('no data found');
+      print("no data found");
     }
   }
 
@@ -179,15 +196,17 @@ class _LoginPageState extends State<LoginPage> {
                   style: ElevatedButton.styleFrom(
                       primary: Colors.blue[100],
                       onPrimary: Colors.blueGrey[900]),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_globalKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Processing Data'),
-                        ),
-                      );
+                      if (_isLoading) {
+                        setState(() {
+                          showLoaderDialog(context);
+                        });
+                      }
+                      ;
                       params['email'] = _email.text.toLowerCase();
                       params['password'] = _password.text;
+                      params['device_id'] = await _getId();
                       login();
                     } else {
                       print('Error... unable to connect to API');
@@ -195,7 +214,15 @@ class _LoginPageState extends State<LoginPage> {
                     // GetData();
                     // print("get data : $pr");
                   },
-                )
+                ),
+                ElevatedButton(
+                    child: Text('function check'),
+                    onPressed: () {
+                      setState(() {
+                        // loading function
+                        showLoaderDialog(context);
+                      });
+                    })
               ],
             ),
           ),
@@ -205,43 +232,46 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
+// getting device id here
 Future<String?> _getId() async {
-  var deviceInfo = DeviceInfoPlugin();
-  var androidDeviceInfo = await deviceInfo.androidInfo;
-  return androidDeviceInfo.androidId; // unique ID on Android
+  DeviceInfoPlugin deviceInfo = await DeviceInfoPlugin();
+  AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+  // print('${androidInfo.androidId}');
+  // params['device_id'] = androidInfo.androidId.toString();
+  return androidInfo.androidId;
 }
 
-// interaction to API
-// class GetData extends LoginPage {
-//   static Future<dynamic> login() async {
-//     var params = {
-//       "program": "fire",
-//       "userId": "Prasad19f87",
-//       "startdate": "2021-05-11",
-//       "enddate": "2021-08-15",
-//       "cameraname": "",
-//       "deptCameras": ""
-//     };
-//
-//     String base_url = "http://192.168.1.8:5020/getAnalyticsAlertsBySummary";
-//     var response = await http.post(Uri.parse(base_url), body: {
-//       "program": "fire",
-//       "userId": "Prasad19f87",
-//       "startdate": "2021-05-11",
-//       "enddate": "2021-08-15",
-//       "cameraname": "",
-//       "deptCameras": ""
-//     });
-//     if (response.statusCode != null) {
-//       print(" inside conditon ${response} ${response.body}");
-//     } else {
-//       print("else conditon ${response} ${response.body}");
-//     }
-//
-//     // if (response.statusCode == HttpStatus.ok){
-//     print("Success");
-//     // }
-//     print('getting response: ${response.body}');
-//     return response.body;
-//   }
-// }
+// error flags received from the API call
+// during error, don't change without matching
+// from the other end (API).
+Map<String, dynamic> error_flag = {
+  "1": "User is already logged-in somewhere",
+  "2": "Invalid E-Mail or password",
+  "3": "No result found"
+};
+
+// loading indicator
+showLoaderDialog(BuildContext context) {
+  AlertDialog alert = AlertDialog(
+    content: new Row(
+      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        SizedBox(
+          width: 10,
+        ),
+        CircularProgressIndicator(),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+          child: Text("Please wait..."),
+        ),
+      ],
+    ),
+  );
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}

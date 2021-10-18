@@ -1,10 +1,8 @@
 import 'package:config_generator/login_page.dart';
 import 'package:flutter/material.dart';
-
 import 'landingpage.dart';
 
 // import 'package:google_fonts/google_fonts.dart';
-bool loginStatus = true;
 
 void main() {
   runApp(
