@@ -6,6 +6,8 @@ import './MainPage.dart';
 import './inputs_page.dart';
 import './web_view_page.dart';
 
+String userIdUrl = '';
+
 class Landing extends StatelessWidget {
   const Landing({Key? key}) : super(key: key);
 
@@ -87,7 +89,7 @@ class Landing extends StatelessWidget {
                     elevation: 5,
                     clipBehavior: Clip.antiAlias,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(18),
                     ),
                     child: InkWell(
                       splashColor: Colors.blue.withAlpha(30),
@@ -137,7 +139,7 @@ class Landing extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     elevation: 5,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(18),
                     ),
                     child: InkWell(
                       splashColor: Colors.blue.withAlpha(30),
@@ -188,7 +190,7 @@ class Landing extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     elevation: 5,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(18),
                     ),
                     child: InkWell(
                       splashColor: Colors.blue.withAlpha(30),
@@ -239,7 +241,7 @@ class Landing extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     elevation: 5,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(18),
                     ),
                     child: InkWell(
                       splashColor: Colors.blue.withAlpha(30),
@@ -290,7 +292,7 @@ class Landing extends StatelessWidget {
                     elevation: 5,
                     clipBehavior: Clip.antiAlias,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(18),
                     ),
                     child: InkWell(
                       splashColor: Colors.lightBlue.withAlpha(30),
@@ -341,7 +343,7 @@ class Landing extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     elevation: 5,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(18),
                     ),
                     child: InkWell(
                       splashColor: Colors.blue.withAlpha(30),

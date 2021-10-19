@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
@@ -18,25 +19,30 @@ class Inputs_page extends StatefulWidget {
 class _Inputs_pageState extends State<Inputs_page> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        backgroundColor: Colors.blue[50],
-        title: Image.asset('assets/images/bannar.png', fit: BoxFit.fill),
-        elevation: 8,
-      ),
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          backgroundColor: Colors.blue[50],
+          title: Image.asset('assets/images/bannar.png', fit: BoxFit.fill),
+          elevation: 8,
+        ),
 
-      // user
-      // ip
-      // port
-      // netmask
-      // interface
-      // Syspassword
-      // Management Server IP
-      // Gateway
-      // Mac id
-      // status
-      body: Configs(),
+        // user
+        // ip
+        // port
+        // netmask
+        // interface
+        // Syspassword
+        // Management Server IP
+        // Gateway
+        // Mac id
+        // status
+        body: Configs(),
+      ),
     );
   }
 }
@@ -294,7 +300,20 @@ class _ConfigsState extends State<Configs> {
 
         // Add ElevatedButton here.
         ElevatedButton(
-            child: Text('Submit'),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.blue[100],
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(18.0),
+              ),
+            ),
+            child: Text(
+              'Submit',
+              style: GoogleFonts.lato(
+                  textStyle: Theme.of(context).textTheme.headline6,
+                  color: Colors.blueGrey[800],
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700),
+            ),
             onPressed: () async {
               formData['user'] = _user.text;
               formData['ip'] = _ip.text;

@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+
+import 'landingpage.dart';
 
 // unique id of the device
 var device_id = _getId();
@@ -50,27 +53,33 @@ class _LoginPageState extends State<LoginPage> {
     print('params: $params');
     print('response received: ${response.body}');
 
+    // spinkit loading container
+    dynamic spinkit = SpinKitFadingCube(
+      color: Colors.blueGrey,
+      size: 200.0,
+    );
+
     // verification of the response from the server
     //
     if (response.statusCode == 200) {
-      setState(() {
-        _isLoading = true;
-      });
+      // start loading
+      _isLoading = true;
+
+      // calling API and saving response
       Map<String, dynamic> data = jsonDecode(response.body);
       print(data.keys);
-      if (data.keys.length > 1) {
-        print('success');
+
+      // checking if data is more than just error
+      if (data.keys.length > 1 || data['password'] == _password) {
+        userIdUrl = data['userID']; // check userid spelling from backend
         loginStatus = true;
         print("login status: $loginStatus");
-        setState(() {
-          _isLoading = false;
-        });
         return "Successfully Logged-in";
       } else if (data.keys.length <= 1) {
         try {
-          print("status from other side: ${error_flag[data['error']]}");
+          return "status from other side: ${error_flag[data['error']]}";
         } catch (error) {
-          print("some error occured: $error");
+          return "some error occured: $error";
         }
       }
     } else if (response.statusCode == 500) {
@@ -198,16 +207,15 @@ class _LoginPageState extends State<LoginPage> {
                       onPrimary: Colors.blueGrey[900]),
                   onPressed: () async {
                     if (_globalKey.currentState!.validate()) {
-                      if (_isLoading) {
-                        setState(() {
-                          showLoaderDialog(context);
-                        });
-                      }
-                      ;
-                      params['email'] = _email.text.toLowerCase();
-                      params['password'] = _password.text;
-                      params['device_id'] = await _getId();
-                      login();
+                      setState(() async {
+                        _isLoading
+                            ? showLoaderDialog(context)
+                            : showErrorDialog(context);
+                        params['email'] = _email.text.toLowerCase();
+                        params['password'] = _password.text;
+                        params['device_id'] = await _getId();
+                        login();
+                      });
                     } else {
                       print('Error... unable to connect to API');
                     }
@@ -220,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       setState(() {
                         // loading function
-                        showLoaderDialog(context);
+                        showErrorDialog(context);
                       });
                     })
               ],
@@ -269,6 +277,47 @@ showLoaderDialog(BuildContext context) {
   );
   showDialog(
     barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+showErrorDialog(BuildContext context) {
+  AlertDialog alert = AlertDialog(
+    title: Text(
+      'Error!',
+      textAlign: TextAlign.center,
+      style: GoogleFonts.lato(
+        textStyle: Theme.of(context).textTheme.headline4,
+        color: Colors.black54,
+        fontSize: 24,
+        fontWeight: FontWeight.w700,
+      ),
+    ),
+    content: Text(
+      'While trying to Log you in, we got some error...',
+      style: GoogleFonts.lato(
+        textStyle: Theme.of(context).textTheme.bodyText1,
+        color: Colors.black54,
+        fontSize: 18,
+        fontWeight: FontWeight.w400,
+      ),
+      textAlign: TextAlign.center,
+      softWrap: true,
+    ),
+    actions: [
+      TextButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Text('OK'),
+      )
+    ],
+  );
+  showDialog(
+    barrierDismissible: true,
     context: context,
     builder: (BuildContext context) {
       return alert;
