@@ -31,7 +31,7 @@ class _Inputs_pageState extends State<Inputs_page> {
           elevation: 8,
         ),
 
-        // user
+        //
         // ip
         // port
         // netmask
@@ -56,28 +56,20 @@ class Configs extends StatefulWidget {
 
 class _ConfigsState extends State<Configs> {
   final Map<String, dynamic> formData = {
-    'user': null,
-    'ip': null,
-    'port': null,
-    'netmask': null,
+    'static_ip': null,
     'interface': null,
-    'syspassword': null,
-    'management_server_ip': null,
+    'syspass': null,
+    'netmask': null,
     'gateway': null,
-    'mac_id': null,
-    'status': null
+    'network_file': "/etc/netplan/"
   };
 
-  TextEditingController _user = TextEditingController();
-  TextEditingController _ip = TextEditingController();
-  TextEditingController _port = TextEditingController();
-  TextEditingController _mask = TextEditingController();
-  TextEditingController _inter = TextEditingController();
-  TextEditingController _sys = TextEditingController();
-  TextEditingController _serv = TextEditingController();
-  TextEditingController _gate = TextEditingController();
-  TextEditingController _mac = TextEditingController();
-  TextEditingController _sts = TextEditingController();
+  TextEditingController _static_ip = TextEditingController();
+  TextEditingController _interface = TextEditingController();
+  TextEditingController _syspass = TextEditingController();
+  TextEditingController _netmask = TextEditingController();
+  TextEditingController _gateway = TextEditingController();
+  TextEditingController _network_file = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +79,7 @@ class _ConfigsState extends State<Configs> {
       padding: const EdgeInsets.all(8),
       children: <Widget>[
         TextFormField(
-          controller: _user,
+          controller: _static_ip,
           style: GoogleFonts.lato(
               textStyle: Theme.of(context).textTheme.headline6,
               color: Colors.blueGrey,
@@ -109,7 +101,7 @@ class _ConfigsState extends State<Configs> {
           obscureText: false,
         ),
         TextFormField(
-          controller: _ip,
+          controller: _interface,
           style: GoogleFonts.lato(
               textStyle: Theme.of(context).textTheme.headline6,
               color: Colors.blueGrey,
@@ -130,7 +122,7 @@ class _ConfigsState extends State<Configs> {
           ),
         ),
         TextFormField(
-          controller: _port,
+          controller: _syspass,
           style: GoogleFonts.lato(
               textStyle: Theme.of(context).textTheme.headline6,
               color: Colors.blueGrey,
@@ -151,7 +143,7 @@ class _ConfigsState extends State<Configs> {
           ),
         ),
         TextFormField(
-          controller: _mask,
+          controller: _netmask,
           style: GoogleFonts.lato(
               textStyle: Theme.of(context).textTheme.headline6,
               color: Colors.blueGrey,
@@ -172,7 +164,7 @@ class _ConfigsState extends State<Configs> {
           ),
         ),
         TextFormField(
-          controller: _inter,
+          controller: _gateway,
           style: GoogleFonts.lato(
               textStyle: Theme.of(context).textTheme.headline6,
               color: Colors.blueGrey,
@@ -193,97 +185,13 @@ class _ConfigsState extends State<Configs> {
           ),
         ),
         TextFormField(
-          controller: _sys,
+          controller: _network_file,
           style: GoogleFonts.lato(
               textStyle: Theme.of(context).textTheme.headline6,
               color: Colors.blueGrey,
               fontWeight: FontWeight.w500),
           decoration: InputDecoration(
             labelText: "System Password",
-            labelStyle: GoogleFonts.lato(
-                textStyle: Theme.of(context).textTheme.bodyText2,
-                fontWeight: FontWeight.w600,
-                fontSize: 20),
-            filled: true,
-            fillColor: Colors.white,
-            border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(15.0),
-              ),
-            ),
-          ),
-        ),
-        TextFormField(
-          controller: _serv,
-          style: GoogleFonts.lato(
-              textStyle: Theme.of(context).textTheme.headline6,
-              color: Colors.blueGrey,
-              fontWeight: FontWeight.w500),
-          decoration: InputDecoration(
-            labelText: "Management Server IP",
-            labelStyle: GoogleFonts.lato(
-                textStyle: Theme.of(context).textTheme.bodyText2,
-                fontWeight: FontWeight.w600,
-                fontSize: 20),
-            filled: true,
-            fillColor: Colors.white,
-            border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(15.0),
-              ),
-            ),
-          ),
-        ),
-        TextFormField(
-          controller: _gate,
-          style: GoogleFonts.lato(
-              textStyle: Theme.of(context).textTheme.headline6,
-              color: Colors.blueGrey,
-              fontWeight: FontWeight.w500),
-          decoration: InputDecoration(
-            labelText: "Gateway",
-            labelStyle: GoogleFonts.lato(
-                textStyle: Theme.of(context).textTheme.bodyText2,
-                fontWeight: FontWeight.w600,
-                fontSize: 20),
-            filled: true,
-            fillColor: Colors.white,
-            border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(15.0),
-              ),
-            ),
-          ),
-        ),
-        TextFormField(
-          controller: _mac,
-          style: GoogleFonts.lato(
-              textStyle: Theme.of(context).textTheme.headline6,
-              color: Colors.blueGrey,
-              fontWeight: FontWeight.w500),
-          decoration: InputDecoration(
-            labelText: "Mac_id",
-            labelStyle: GoogleFonts.lato(
-                textStyle: Theme.of(context).textTheme.bodyText2,
-                fontWeight: FontWeight.w600,
-                fontSize: 20),
-            filled: true,
-            fillColor: Colors.white,
-            border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(15.0),
-              ),
-            ),
-          ),
-        ),
-        TextFormField(
-          controller: _sts,
-          style: GoogleFonts.lato(
-              textStyle: Theme.of(context).textTheme.headline6,
-              color: Colors.blueGrey,
-              fontWeight: FontWeight.w500),
-          decoration: InputDecoration(
-            labelText: "Status",
             labelStyle: GoogleFonts.lato(
                 textStyle: Theme.of(context).textTheme.bodyText2,
                 fontWeight: FontWeight.w600,
@@ -315,16 +223,12 @@ class _ConfigsState extends State<Configs> {
                   fontWeight: FontWeight.w700),
             ),
             onPressed: () async {
-              formData['user'] = _user.text;
-              formData['ip'] = _ip.text;
-              formData['port'] = _port.text;
-              formData['netmask'] = _mask.text;
-              formData['interface'] = _inter.text;
-              formData['syspassword'] = _sys.text;
-              formData['management_server_ip'] = _serv.text;
-              formData['gateway'] = _gate.text;
-              formData['mac_id'] = _mac.text;
-              formData['status'] = _sts.text;
+              formData['static_ip'] = _static_ip.text;
+              formData['interface'] = _interface.text;
+              formData['syspass'] = _syspass.text;
+              formData['netmask'] = _netmask.text;
+              formData['gateway'] = _gateway.text;
+              formData['network_file'] = _network_file.text;
               // trying to make json file out of formData
               // print('trying to convert json file');
               dynamic config = json.encode(formData);

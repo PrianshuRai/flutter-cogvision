@@ -1,5 +1,7 @@
 import 'package:config_generator/login_page.dart';
 import 'package:flutter/material.dart';
+import 'file_handle.dart';
+import 'inputs_page.dart';
 import 'landingpage.dart';
 
 // import 'package:google_fonts/google_fonts.dart';
@@ -13,7 +15,8 @@ void main() {
         primaryColor: Colors.blue[100],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: loginStatus ? Landing() : LoginPage(),
+      home: Inputs_page(),
+      // home: loginStatus ? Landing() : LoginPage(), FileHandle()
     ),
   );
 }
