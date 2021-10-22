@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 
 // unique id of the device
 var globaluserid = null;
-bool loginStatus = false;
+bool loginStatus = true;
 
 // this class contains all visual elements of
 // login page
@@ -28,7 +28,6 @@ class _LoginPageState extends State<LoginPage> {
   bool visible = true;
 
   // loading indicator value
-  bool _isLoading = false;
 
   // Sign-in form key for login page
   final _globalKey = GlobalKey<FormState>();
@@ -37,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
       BuildContext context, Object? arguments) {
     return DialogRoute<void>(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         insetPadding: EdgeInsets.all(15),
@@ -63,7 +63,10 @@ class _LoginPageState extends State<LoginPage> {
       BuildContext context, Object? arguments) {
     return DialogRoute<void>(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        insetPadding: EdgeInsets.all(15),
         title: Text(
           'Success!',
           textAlign: TextAlign.center,
@@ -75,9 +78,9 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         content: Text(
-          "You have been successfully logged-in",
-          style: GoogleFonts.lato(
-            textStyle: Theme.of(context).textTheme.bodyText1,
+              "You have been successfully logged-in",
+              style: GoogleFonts.lato(
+                textStyle: Theme.of(context).textTheme.bodyText1,
             color: Colors.black54,
             fontSize: 18,
             fontWeight: FontWeight.w400,
@@ -88,8 +91,44 @@ class _LoginPageState extends State<LoginPage> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Landing()));
+              // Navigator.push(
+              //     context, MaterialPageRoute(builder: (context) => Landing()));
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) => Landing()));
+            },
+            child: Text('OK'),
+          )
+        ],
+      ),
+    );
+  }
+
+  String message = '';
+
+  static Route<Object?> _errorBuilder(BuildContext context, Object? arguments) {
+    return DialogRoute<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        insetPadding: EdgeInsets.all(15),
+        title: Text(
+          'ERROR! ❌',
+          textAlign: TextAlign.center,
+          style: GoogleFonts.lato(
+            textStyle: Theme.of(context).textTheme.headline4,
+            color: Colors.black54,
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              // Navigator.push(
+              //     context, MaterialPageRoute(builder: (context) => Landing()));
+              Navigator.of(context).pop();
             },
             child: Text('OK'),
           )
@@ -121,7 +160,6 @@ class _LoginPageState extends State<LoginPage> {
   // get device_id = await _getId();
 
   Future<dynamic> login() async {
-    print('device_id');
     // start loding animation on function call
     Navigator.of(context).restorablePush(_dialogBuilder);
 
@@ -132,13 +170,14 @@ class _LoginPageState extends State<LoginPage> {
     print('response received: ${response.body}');
 
     Navigator.of(context, rootNavigator: true).pop(_dialogBuilder);
+    print("status for response: ${response.statusCode}");
 
     // verification of the response from the server
     //
     if (response.statusCode == 200) {
       // calling API and saving response
       Map<String, dynamic> data = jsonDecode(response.body);
-      print(data.keys);
+      print("data = ${data.keys}");
 
       // checking if data is more than just error
       if (data.keys.length > 1 || data['password'] == _password) {
@@ -149,10 +188,27 @@ class _LoginPageState extends State<LoginPage> {
         print("login status: $loginStatus");
         Navigator.of(context).restorablePush(_successBuilder);
       } else if (data.keys.length <= 1) {
+        print('in else block');
         try {
-          return "status from other side: ${error_flag[data['error']]}";
+          Navigator.of(context).restorablePush(_errorBuilder);
+          print('in try block');
+          if (data.containsKey("error")) {
+            print('contains error');
+            setState(() {
+              if (message.isEmpty) {
+                message = error_flag[data["error"]];
+              } else {
+                message = "something is not correct";
+              }
+            });
+            print('flag changed');
+          } else {
+            print("second else block");
+            message = 'error';
+            Navigator.of(context).restorablePush(_errorBuilder);
+          }
         } catch (error) {
-          return "some error occured: $error";
+          return "some error occurred: $error";
         }
       }
     } else if (response.statusCode == 500) {
@@ -183,151 +239,170 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Colors.white,
         ),
         body: Stack(
-          alignment: AlignmentDirectional.bottomCenter,
           children: [
-            Container(
-              alignment: AlignmentDirectional.bottomCenter,
-              height: 400,
-              child: Card(
-                  child: AutofillGroup(
-                child: Form(
-                  key: _globalKey,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        TextFormField(
-                          controller: _email,
-                          keyboardType: TextInputType.emailAddress,
-                          style: GoogleFonts.lato(
-                              textStyle: Theme.of(context).textTheme.headline6,
-                              color: Colors.blueGrey,
-                              fontWeight: FontWeight.w500),
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.email_rounded),
-                            labelText: "E-mail",
-                            labelStyle: GoogleFonts.lato(
+            Positioned(
+              bottom: 48.0,
+              left: 10.0,
+              right: 10.0,
+              child: Container(
+                // height: 400,
+                child: Card(
+                    child: AutofillGroup(
+                  child: Form(
+                    key: _globalKey,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          TextFormField(
+                            controller: _email,
+                            keyboardType: TextInputType.emailAddress,
+                            style: GoogleFonts.lato(
                                 textStyle:
-                                    Theme.of(context).textTheme.bodyText2,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 20),
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                    Theme.of(context).textTheme.headline6,
+                                color: Colors.blueGrey,
+                                fontWeight: FontWeight.w500),
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.email_rounded),
+                              labelText: "E-mail",
+                              labelStyle: GoogleFonts.lato(
+                                  textStyle:
+                                      Theme.of(context).textTheme.bodyText2,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20),
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: const OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15.0),
+                                ),
                               ),
                             ),
+                            autofillHints: [AutofillHints.email],
+                            validator: (value) {
+                              // add your custom validation here.
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              if (value.length < 9) {
+                                return 'Something is wrong here';
+                              }
+                              if (!value.contains('@') ||
+                                  !value.contains('cogvision.ai')) {
+                                return "Email is incorrect";
+                              }
+                              return null;
+                            },
                           ),
-                          autofillHints: [AutofillHints.email],
-                          validator: (value) {
-                            // add your custom validation here.
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            if (value.length < 9) {
-                              return 'Something is wrong here';
-                            }
-                            if (!value.contains('@') ||
-                                !value.contains('cogvision.ai')) {
-                              return "Email is incorrect";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          controller: _password,
-                          obscureText: visible,
-                          style: GoogleFonts.lato(
-                              textStyle: Theme.of(context).textTheme.headline6,
-                              color: Colors.blueGrey,
-                              fontWeight: FontWeight.w500),
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              icon: Icon(visible
-                                  ? Icons.visibility_off_rounded
-                                  : Icons.visibility_rounded),
-                              onPressed: () {
-                                setState(() {
-                                  visible = !visible;
-                                });
-                              },
-                            ),
-                            prefixIcon: Icon(Icons.vpn_key_rounded),
-                            labelText: "Password",
-                            labelStyle: GoogleFonts.lato(
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextFormField(
+                            controller: _password,
+                            obscureText: visible,
+                            style: GoogleFonts.lato(
                                 textStyle:
-                                    Theme.of(context).textTheme.bodyText2,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 20),
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                    Theme.of(context).textTheme.headline6,
+                                color: Colors.blueGrey,
+                                fontWeight: FontWeight.w500),
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                icon: Icon(visible
+                                    ? Icons.visibility_off_rounded
+                                    : Icons.visibility_rounded),
+                                onPressed: () {
+                                  setState(() {
+                                    visible = !visible;
+                                  });
+                                },
+                              ),
+                              prefixIcon: Icon(Icons.vpn_key_rounded),
+                              labelText: "Password",
+                              labelStyle: GoogleFonts.lato(
+                                  textStyle:
+                                      Theme.of(context).textTheme.bodyText2,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20),
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: const OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15.0),
+                                ),
                               ),
                             ),
+                            autofillHints: [AutofillHints.password],
+                            onEditingComplete: () {
+                              TextInput.finishAutofillContext();
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter password!';
+                              }
+                              if (value.length < 6) {
+                                return "Password is too small to be secure!";
+                              }
+                              return null;
+                            },
                           ),
-                          autofillHints: [AutofillHints.password],
-                          onEditingComplete: () {
-                            TextInput.finishAutofillContext();
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter password!';
-                            }
-                            if (value.length < 6) {
-                              return "Password is too small to be secure!";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        ElevatedButton(
-                          child: Text('Submit'),
-                          style: ElevatedButton.styleFrom(
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            '$message',
+                            style: GoogleFonts.lato(
+                              textStyle: Theme.of(context).textTheme.bodyText2,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          ElevatedButton(
+                            child: Text('Submit'),
+                            style: ElevatedButton.styleFrom(
                               primary: Colors.blue[100],
-                              onPrimary: Colors.blueGrey[900]),
-                          onPressed: () async {
-                            if (_globalKey.currentState!.validate()) {
-                              // setState(() async {
-                              // _isLoading = true;
-                              // _isLoading
-                              //     ? showLoaderDialog(context)
-                              //     : showErrorDialog(context);
-                              // });
-                              params['email'] = _email.text.toLowerCase();
-                              print('email saved ${params['email']}');
-                              params['password'] = _password.text;
-                              _GetId();
-                              // params['device_id'] = device_id;
-                              print('device_id ${params['device_id']}');
-                              print('you tapped button');
-                              login();
-                            } else {
-                              print('Error... unable to connect to API');
-                            }
-                            // GetData();
-                            // print("get data : $pr");
-                          },
-                        ),
-                        // ElevatedButton(
-                        //   child: Text('function check'),
-                        //   onPressed: () {
-                        //     newFun();
-                        //   },
-                        // ),
-                      ],
+                              onPrimary: Colors.blueGrey[900],
+                              fixedSize:
+                                  Size(MediaQuery.of(context).size.width, 50),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50)),
+                            ),
+                            onPressed: () async {
+                              if (_globalKey.currentState!.validate()) {
+                                // setState(() async {
+                                // _isLoading = true;
+                                // _isLoading
+                                //     ? showLoaderDialog(context)
+                                //     : showErrorDialog(context);
+                                // });
+                                params['email'] = _email.text.toLowerCase();
+                                print('email saved ${params['email']}');
+                                params['password'] = _password.text;
+                                //  _GetId();
+                                var device_id = await _getId();
+                                params["device_id"] = device_id;
+                                print(
+                                    'device id---->>>>> $device_id updating params ${params['device_id']}');
+                                print('you tapped button');
+                                login();
+                              } else {
+                                print('Error... unable to connect to API');
+                              }
+                              // GetData();
+                              // print("get data : $pr");
+                            },
+                          ),
+                          // ElevatedButton(
+                          //   child: Text('function check'),
+                          //   onPressed: () {
+                          //     newFun();
+                          //   },
+                          // ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              )),
+                )),
+              ),
             ),
           ],
         ),

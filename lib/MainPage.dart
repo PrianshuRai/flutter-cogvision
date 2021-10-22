@@ -1,11 +1,9 @@
 // ignore_for_file: file_names
 
 import 'dart:async';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 // import './BackgroundCollectedPage.dart';
 import './BackgroundCollectingTask.dart';
