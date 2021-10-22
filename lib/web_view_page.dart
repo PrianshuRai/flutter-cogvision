@@ -15,7 +15,7 @@ class PortalPage extends StatefulWidget {
 class _PortalPageState extends State<PortalPage> {
   bool isLoading = true;
 
-  static const spinkit = SpinKitPouringHourGlassRefined(
+  static const spinkit = SpinKitSpinningLines(
     color: Colors.blueGrey,
     size: 200.0,
   );

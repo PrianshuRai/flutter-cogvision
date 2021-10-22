@@ -5,8 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import './MainPage.dart';
 import './inputs_page.dart';
 import './web_view_page.dart';
-
-String userIdUrl = '';
+import 'login_page.dart';
 
 class Landing extends StatelessWidget {
   const Landing({Key? key}) : super(key: key);
@@ -148,7 +147,8 @@ class Landing extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => PortalPage(
-                                    link: 'https://www.facebook.com/')));
+                                    link:
+                                        'http://192.168.1.8:8085/mobile1iot?userId=$globaluserid')));
                       },
                       child: Center(
                         child: Column(
@@ -199,7 +199,7 @@ class Landing extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const PortalPage(
-                                    link: 'https://www.facebook.com/')));
+                                    link: 'http://192.168.1.8:8085')));
                       },
                       child: Center(
                         child: Column(
