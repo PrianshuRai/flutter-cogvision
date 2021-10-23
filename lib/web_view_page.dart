@@ -5,8 +5,10 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class PortalPage extends StatefulWidget {
   final String link;
+  final String routes;
 
-  const PortalPage({Key? key, required this.link}) : super(key: key);
+  const PortalPage({Key? key, required this.link, required this.routes})
+      : super(key: key);
 
   @override
   State<PortalPage> createState() => _PortalPageState();
@@ -22,51 +24,54 @@ class _PortalPageState extends State<PortalPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue[50],
-        title: Image(
-          image: AssetImage('assets/images/bannar.png'),
-          fit: BoxFit.fill,
+    return Hero(
+      tag: widget.routes,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.blue[50],
+          title: Image(
+            image: AssetImage('assets/images/bannar.png'),
+            fit: BoxFit.fill,
+          ),
+          // shadowColor: Colors.indigo[900],
+          elevation: 20,
         ),
-        // shadowColor: Colors.indigo[900],
-        elevation: 20,
-      ),
-      body: Container(
-        child: Stack(
-          children: [
-            WebView(
-              initialUrl: widget.link,
-              javascriptMode: JavascriptMode.unrestricted,
-              onPageFinished: (finish) {
-                setState(() {
-                  isLoading = false;
-                });
-              },
-            ),
-            isLoading
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Center(
-                        child: spinkit,
-                      ),
-                      Text(
-                        "Please wait...",
-                        style: GoogleFonts.lato(
-                            textStyle: Theme.of(context).textTheme.headline6,
-                            color: Colors.blueGrey,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 24),
-                      )
-                    ],
-                  )
-                : Stack(),
-          ],
+        body: Container(
+          child: Stack(
+            children: [
+              WebView(
+                initialUrl: widget.link,
+                javascriptMode: JavascriptMode.unrestricted,
+                onPageFinished: (finish) {
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
+              ),
+              isLoading
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Center(
+                          child: spinkit,
+                        ),
+                        Text(
+                          "Please wait...",
+                          style: GoogleFonts.lato(
+                              textStyle: Theme.of(context).textTheme.headline6,
+                              color: Colors.blueGrey,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 24),
+                        )
+                      ],
+                    )
+                  : Stack(),
+            ],
+          ),
         ),
+        // isLoading ? Center( child: CircularProgressIndicator(),)
+        //     : Stack(),
       ),
-      // isLoading ? Center( child: CircularProgressIndicator(),)
-      //     : Stack(),
     );
   }
 }

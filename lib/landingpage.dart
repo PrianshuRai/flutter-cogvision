@@ -83,307 +83,335 @@ class Landing extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 children: <Widget>[
-                  Card(
-                    color: Colors.blue[50],
-                    elevation: 5,
-                    clipBehavior: Clip.antiAlias,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: InkWell(
-                      splashColor: Colors.blue.withAlpha(30),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MainPage()));
-                      },
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.asset(
-                                'assets/images/bluetooth.png',
-                                height: 60,
-                                width: 60,
+                  Hero(
+                    tag: 'btpage',
+                    child: Card(
+                      color: Colors.blue[50],
+                      elevation: 5,
+                      clipBehavior: Clip.antiAlias,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: InkWell(
+                        splashColor: Colors.blue.withAlpha(30),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MainPage()));
+                        },
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(
+                                  'assets/images/bluetooth.png',
+                                  height: 60,
+                                  width: 60,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Bluetooth',
-                              style: GoogleFonts.lato(
-                                  textStyle:
-                                      Theme.of(context).textTheme.headline5,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              'Control Bluetooth',
-                              style: GoogleFonts.lato(
-                                  textStyle:
-                                      Theme.of(context).textTheme.subtitle2,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400),
-                            )
-                          ],
+                              Text(
+                                'Bluetooth',
+                                style: GoogleFonts.lato(
+                                    textStyle:
+                                        Theme.of(context).textTheme.headline5,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                'Control Bluetooth',
+                                style: GoogleFonts.lato(
+                                    textStyle:
+                                        Theme.of(context).textTheme.subtitle2,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  Card(
-                    color: Colors.red[50],
-                    clipBehavior: Clip.antiAlias,
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: InkWell(
-                      splashColor: Colors.blue.withAlpha(30),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PortalPage(
-                                    link:
-                                        'http://192.168.1.8:8085/mobile1iot?userId=$globaluserid')));
-                      },
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.asset(
-                                'assets/images/search.png',
-                                height: 60,
-                                width: 60,
+                  Hero(
+                    tag: 'web_view',
+                    child: Card(
+                      color: Colors.red[50],
+                      clipBehavior: Clip.antiAlias,
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: InkWell(
+                        splashColor: Colors.blue.withAlpha(30),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PortalPage(
+                                        link:
+                                            'http://192.168.1.8:8085/mobile1iot?userId=$globaluserid',
+                                        routes: 'web_view',
+                                      )));
+                        },
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(
+                                  'assets/images/search.png',
+                                  height: 60,
+                                  width: 60,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Web View',
-                              style: GoogleFonts.lato(
-                                  textStyle:
-                                      Theme.of(context).textTheme.headline5,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              'Glance at our portal',
-                              style: GoogleFonts.lato(
-                                  textStyle:
-                                      Theme.of(context).textTheme.subtitle2,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400),
-                            )
-                          ],
+                              Text(
+                                'Web View',
+                                style: GoogleFonts.lato(
+                                    textStyle:
+                                        Theme.of(context).textTheme.headline5,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                'Glance at our portal',
+                                style: GoogleFonts.lato(
+                                    textStyle:
+                                        Theme.of(context).textTheme.subtitle2,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  Card(
-                    color: Colors.yellow[50],
-                    clipBehavior: Clip.antiAlias,
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: InkWell(
-                      splashColor: Colors.blue.withAlpha(30),
-                      onTap: () {
-                        Navigator.push(
+                  Hero(
+                    tag: 'alerts',
+                    child: Card(
+                      color: Colors.yellow[50],
+                      clipBehavior: Clip.antiAlias,
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: InkWell(
+                        splashColor: Colors.blue.withAlpha(30),
+                        onTap: () {
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const PortalPage(
-                                    link: 'http://192.168.1.8:8085')));
-                      },
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.asset(
-                                'assets/images/notification.png',
-                                height: 60,
-                                width: 60,
+                              builder: (context) => const PortalPage(
+                                link: 'http://192.168.1.8:8085',
+                                routes: 'alerts',
                               ),
                             ),
-                            Text(
-                              'Alerts',
-                              style: GoogleFonts.lato(
-                                  textStyle:
-                                      Theme.of(context).textTheme.headline5,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              'View all alerts',
-                              style: GoogleFonts.lato(
-                                  textStyle:
-                                      Theme.of(context).textTheme.subtitle2,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400),
-                            )
-                          ],
+                          );
+                        },
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(
+                                  'assets/images/notification.png',
+                                  height: 60,
+                                  width: 60,
+                                ),
+                              ),
+                              Text(
+                                'Alerts',
+                                style: GoogleFonts.lato(
+                                    textStyle:
+                                        Theme.of(context).textTheme.headline5,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                'View all alerts',
+                                style: GoogleFonts.lato(
+                                    textStyle:
+                                        Theme.of(context).textTheme.subtitle2,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  Card(
-                    color: Colors.blueGrey[50],
-                    clipBehavior: Clip.antiAlias,
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: InkWell(
-                      splashColor: Colors.blue.withAlpha(30),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PortalPage(
-                                    link: 'https://www.google.com/')));
-                      },
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.asset(
-                                'assets/images/iot.png',
-                                height: 60,
-                                width: 60,
+                  Hero(
+                    tag: 'camera',
+                    child: Card(
+                      color: Colors.blueGrey[50],
+                      clipBehavior: Clip.antiAlias,
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: InkWell(
+                        splashColor: Colors.blue.withAlpha(30),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PortalPage(
+                                        link: 'https://www.google.com/',
+                                        routes: 'camera',
+                                      )));
+                        },
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(
+                                  'assets/images/iot.png',
+                                  height: 60,
+                                  width: 60,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'IOT',
-                              style: GoogleFonts.lato(
-                                  textStyle:
-                                      Theme.of(context).textTheme.headline5,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              'All IOT devices',
-                              style: GoogleFonts.lato(
-                                  textStyle:
-                                      Theme.of(context).textTheme.subtitle2,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400),
-                            )
-                          ],
+                              Text(
+                                'IOT',
+                                style: GoogleFonts.lato(
+                                    textStyle:
+                                        Theme.of(context).textTheme.headline5,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                'All IOT devices',
+                                style: GoogleFonts.lato(
+                                    textStyle:
+                                        Theme.of(context).textTheme.subtitle2,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  Card(
-                    color: Colors.indigo[50],
-                    elevation: 5,
-                    clipBehavior: Clip.antiAlias,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: InkWell(
-                      splashColor: Colors.lightBlue.withAlpha(30),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PortalPage(
-                                    link: 'https://www.mozilla.com')));
-                      },
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.asset(
-                                'assets/images/code.png',
-                                height: 60,
-                                width: 60,
+                  Hero(
+                    tag: 'programs',
+                    child: Card(
+                      color: Colors.indigo[50],
+                      elevation: 5,
+                      clipBehavior: Clip.antiAlias,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: InkWell(
+                        splashColor: Colors.lightBlue.withAlpha(30),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PortalPage(
+                                        link: 'https://www.mozilla.com',
+                                        routes: 'programs',
+                                      )));
+                        },
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(
+                                  'assets/images/code.png',
+                                  height: 60,
+                                  width: 60,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Programs',
-                              style: GoogleFonts.lato(
-                                  textStyle:
-                                      Theme.of(context).textTheme.headline5,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              'View running programs ',
-                              style: GoogleFonts.lato(
-                                  textStyle:
-                                      Theme.of(context).textTheme.subtitle2,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400),
-                            )
-                          ],
+                              Text(
+                                'Programs',
+                                style: GoogleFonts.lato(
+                                    textStyle:
+                                        Theme.of(context).textTheme.headline5,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                'View running programs ',
+                                style: GoogleFonts.lato(
+                                    textStyle:
+                                        Theme.of(context).textTheme.subtitle2,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  Card(
-                    color: Colors.amber[50],
-                    clipBehavior: Clip.antiAlias,
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: InkWell(
-                      splashColor: Colors.blue.withAlpha(30),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Inputs_page()));
-                      },
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.asset(
-                                'assets/images/smartphone.png',
-                                height: 60,
-                                width: 60,
+                  Hero(
+                    tag: 'inputs',
+                    child: Card(
+                      color: Colors.amber[50],
+                      clipBehavior: Clip.antiAlias,
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: InkWell(
+                        splashColor: Colors.blue.withAlpha(30),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Inputs_page()));
+                        },
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(
+                                  'assets/images/smartphone.png',
+                                  height: 60,
+                                  width: 60,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Sync',
-                              style: GoogleFonts.lato(
-                                  textStyle:
-                                      Theme.of(context).textTheme.headline5,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              'Enter values manually',
-                              style: GoogleFonts.lato(
-                                  textStyle:
-                                      Theme.of(context).textTheme.subtitle2,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400),
-                            )
-                          ],
+                              Text(
+                                'Sync',
+                                style: GoogleFonts.lato(
+                                    textStyle:
+                                        Theme.of(context).textTheme.headline5,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                'Enter values manually',
+                                style: GoogleFonts.lato(
+                                    textStyle:
+                                        Theme.of(context).textTheme.subtitle2,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),

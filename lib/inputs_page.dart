@@ -23,25 +23,25 @@ class _Inputs_pageState extends State<Inputs_page> {
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-          backgroundColor: Colors.blue[50],
-          title: Image.asset('assets/images/bannar.png', fit: BoxFit.fill),
-          elevation: 8,
-        ),
+      child: Hero(
+        tag: 'inputs',
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          appBar: AppBar(
+            backgroundColor: Colors.blue[50],
+            title: Image.asset('assets/images/bannar.png', fit: BoxFit.fill),
+            elevation: 8,
+          ),
 
-        //
-        // ip
-        // port
-        // netmask
-        // interface
-        // Syspassword
-        // Management Server IP
-        // Gateway
-        // Mac id
-        // status
-        body: Configs(),
+          // 'static_ip': null,
+          // 'interface': null,
+          // 'syspass': null,
+          // 'netmask': null,
+          // 'gateway': null,
+          // 'network_file':
+
+          body: Configs(),
+        ),
       ),
     );
   }
@@ -85,7 +85,7 @@ class _ConfigsState extends State<Configs> {
               color: Colors.blueGrey,
               fontWeight: FontWeight.w500),
           decoration: InputDecoration(
-            labelText: "User",
+            labelText: "Static IP",
             labelStyle: GoogleFonts.lato(
                 textStyle: Theme.of(context).textTheme.bodyText2,
                 fontWeight: FontWeight.w600,
@@ -107,7 +107,7 @@ class _ConfigsState extends State<Configs> {
               color: Colors.blueGrey,
               fontWeight: FontWeight.w500),
           decoration: InputDecoration(
-            labelText: "IP",
+            labelText: "Interface",
             labelStyle: GoogleFonts.lato(
                 textStyle: Theme.of(context).textTheme.bodyText2,
                 fontWeight: FontWeight.w600,
@@ -128,7 +128,7 @@ class _ConfigsState extends State<Configs> {
               color: Colors.blueGrey,
               fontWeight: FontWeight.w500),
           decoration: InputDecoration(
-            labelText: "Port",
+            labelText: "System Password",
             labelStyle: GoogleFonts.lato(
                 textStyle: Theme.of(context).textTheme.bodyText2,
                 fontWeight: FontWeight.w600,
@@ -170,7 +170,7 @@ class _ConfigsState extends State<Configs> {
               color: Colors.blueGrey,
               fontWeight: FontWeight.w500),
           decoration: InputDecoration(
-            labelText: "Interface",
+            labelText: "Gateway",
             labelStyle: GoogleFonts.lato(
                 textStyle: Theme.of(context).textTheme.bodyText2,
                 fontWeight: FontWeight.w600,
@@ -191,7 +191,7 @@ class _ConfigsState extends State<Configs> {
               color: Colors.blueGrey,
               fontWeight: FontWeight.w500),
           decoration: InputDecoration(
-            labelText: "System Password",
+            labelText: "Network File",
             labelStyle: GoogleFonts.lato(
                 textStyle: Theme.of(context).textTheme.bodyText2,
                 fontWeight: FontWeight.w600,
