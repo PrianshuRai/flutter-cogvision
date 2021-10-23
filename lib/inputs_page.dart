@@ -213,13 +213,13 @@ class _ConfigsState extends State<Configs> {
               shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(18.0),
               ),
-            ),
+              elevation: 10),
             child: Text(
               'Submit',
               style: GoogleFonts.lato(
                   textStyle: Theme.of(context).textTheme.headline6,
                   color: Colors.blueGrey[800],
-                  fontSize: 24,
+                  // fontSize: 24,
                   fontWeight: FontWeight.w700),
             ),
             onPressed: () async {
