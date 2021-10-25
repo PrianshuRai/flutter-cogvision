@@ -1,18 +1,160 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 
 import './MainPage.dart';
 import './inputs_page.dart';
 import './web_view_page.dart';
 import 'login_page.dart';
 
-class Landing extends StatelessWidget {
+class Landing extends StatefulWidget {
   const Landing({Key? key}) : super(key: key);
 
-  // IOT Programs Report Notification
+  @override
+  State<Landing> createState() => _LandingState();
+}
+
+class _LandingState extends State<Landing> {
+  static Route<Object?> _userdialogBuilder(
+      BuildContext context, Object? arguments) {
+    return DialogRoute<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        insetPadding: EdgeInsets.all(15),
+        // backgroundColor: Colors.transparent,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(
+                    "Prianshu",
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                  CircleAvatar(
+                    backgroundImage: AssetImage('assets/images/icon.png'),
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(''), // user information goes here
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  static Route<Object?> _logoutBuilder(
+      BuildContext context, Object? arguments) {
+    return DialogRoute<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        insetPadding: EdgeInsets.all(15),
+        title: Text(
+          'WARNING!',
+          textAlign: TextAlign.center,
+          style: GoogleFonts.lato(
+            textStyle: Theme.of(context).textTheme.headline4,
+            color: Colors.black54,
+            fontSize: 28,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        content: Text(
+          "Are you sure you want to log out?",
+          textAlign: TextAlign.center,
+          style: GoogleFonts.lato(
+            textStyle: Theme.of(context).textTheme.headline4,
+            color: Colors.black54,
+            fontSize: 22,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              print("running function");
+              CircularProgressIndicator();
+              try {
+                var base_url =
+                    Uri.parse("http://192.168.1.8:5020/users/logout_mobile");
+                print("Map made : ${globalDeviceId} and user $globaluserid}");
+                var response = await http.post(base_url, body: {
+                  "userId": globaluserid,
+                  "device_id": globalDeviceId
+                });
+                print("response body : ${response.body}");
+
+                if (response.statusCode == 200) {
+                  Map<String, dynamic> data = jsonDecode(response.body);
+                  print("data: $data");
+                  if (data.keys.contains("success")) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  } else if (data.keys.contains("error")) {
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content:
+                            Text("Can not logout, Error: ${data["error"]}"),
+                        duration: Duration(seconds: 1),
+                        action: SnackBarAction(label: "OK", onPressed: () {}),
+                      ),
+                    );
+                  }
+                } else {
+                  print("else function running");
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Unable to connect... Check network]}"),
+                      duration: Duration(seconds: 1),
+                      action: SnackBarAction(label: "OK", onPressed: () {}),
+                    ),
+                  );
+                }
+              } catch (e) {
+                print("exception function running");
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Unable to connect... Check network"),
+                    duration: Duration(seconds: 3),
+                    action: SnackBarAction(label: "OK", onPressed: () {}),
+                  ),
+                );
+              }
+            },
+            child: Text(
+              'Log out',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('Cancel', style: TextStyle(fontSize: 18)),
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +167,7 @@ class Landing extends StatelessWidget {
               flex: 2,
               child: Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
@@ -85,349 +227,311 @@ class Landing extends StatelessWidget {
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 8,
                     padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     children: <Widget>[
-                      Hero(
-                        tag: 'btpage',
-                        child: Card(
-                          color: Colors.blue[50],
-                          elevation: 5,
-                          clipBehavior: Clip.antiAlias,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          child: InkWell(
-                            splashColor: Colors.blue.withAlpha(30),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MainPage()));
-                            },
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(
-                                      'assets/images/bluetooth.png',
-                                      height: 60,
-                                      width: 60,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Bluetooth',
-                                    style: GoogleFonts.lato(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .headline5,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  Text(
-                                    'Control Bluetooth',
-                                    style: GoogleFonts.lato(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
+                      Card(
+                        color: Colors.blue[50],
+                        elevation: 5,
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
                         ),
-                      ),
-                      Hero(
-                        tag: 'web_view',
-                        child: Card(
-                          color: Colors.red[50],
-                          clipBehavior: Clip.antiAlias,
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          child: InkWell(
-                            splashColor: Colors.blue.withAlpha(30),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PortalPage(
-                                            link:
-                                                'http://192.168.1.8:8085/mobile1iot?userId=$globaluserid',
-                                            routes: 'web_view',
-                                          )));
-                            },
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(
-                                      'assets/images/search.png',
-                                      height: 60,
-                                      width: 60,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Web View',
-                                    style: GoogleFonts.lato(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .headline5,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  Text(
-                                    'Glance at our portal',
-                                    style: GoogleFonts.lato(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Hero(
-                        tag: 'alerts',
-                        child: Card(
-                          color: Colors.yellow[50],
-                          clipBehavior: Clip.antiAlias,
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          child: InkWell(
-                            splashColor: Colors.blue.withAlpha(30),
-                            onTap: () {
-                              Navigator.push(
+                        child: InkWell(
+                          splashColor: Colors.blue.withAlpha(30),
+                          onTap: () {
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const PortalPage(
-                                    link: 'http://192.168.1.8:8085',
-                                    routes: 'alerts',
+                                    builder: (context) => MainPage()));
+                          },
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(
+                                    'assets/images/bluetooth.png',
+                                    height: 60,
+                                    width: 60,
                                   ),
                                 ),
-                              );
-                            },
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(
-                                      'assets/images/notification.png',
-                                      height: 60,
-                                      width: 60,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Alerts',
-                                    style: GoogleFonts.lato(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .headline5,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  Text(
-                                    'View all alerts',
-                                    style: GoogleFonts.lato(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400),
-                                  )
-                                ],
-                              ),
+                                Text(
+                                  'Bluetooth',
+                                  style: GoogleFonts.lato(
+                                      textStyle:
+                                          Theme.of(context).textTheme.headline5,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  'Control Bluetooth',
+                                  style: GoogleFonts.lato(
+                                      textStyle:
+                                          Theme.of(context).textTheme.subtitle2,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400),
+                                )
+                              ],
                             ),
                           ),
                         ),
                       ),
-                      Hero(
-                        tag: 'camera',
-                        child: Card(
-                          color: Colors.blueGrey[50],
-                          clipBehavior: Clip.antiAlias,
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          child: InkWell(
-                            splashColor: Colors.blue.withAlpha(30),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PortalPage(
-                                            link: 'https://www.google.com/',
-                                            routes: 'camera',
-                                          )));
-                            },
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(
-                                      'assets/images/iot.png',
-                                      height: 60,
-                                      width: 60,
-                                    ),
+                      Card(
+                        color: Colors.red[50],
+                        clipBehavior: Clip.antiAlias,
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: InkWell(
+                          splashColor: Colors.blue.withAlpha(30),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PortalPage(
+                                        link:
+                                            'http://192.168.1.8:8085/mobile1iot?userId=$globaluserid')));
+                          },
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(
+                                    'assets/images/search.png',
+                                    height: 60,
+                                    width: 60,
                                   ),
-                                  Text(
-                                    'IOT',
-                                    style: GoogleFonts.lato(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .headline5,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  Text(
-                                    'All IOT devices',
-                                    style: GoogleFonts.lato(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400),
-                                  )
-                                ],
-                              ),
+                                ),
+                                Text(
+                                  'Web View',
+                                  style: GoogleFonts.lato(
+                                      textStyle:
+                                          Theme.of(context).textTheme.headline5,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  'Glance at our portal',
+                                  style: GoogleFonts.lato(
+                                      textStyle:
+                                          Theme.of(context).textTheme.subtitle2,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400),
+                                )
+                              ],
                             ),
                           ),
                         ),
                       ),
-                      Hero(
-                        tag: 'programs',
-                        child: Card(
-                          color: Colors.indigo[50],
-                          elevation: 5,
-                          clipBehavior: Clip.antiAlias,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          child: InkWell(
-                            splashColor: Colors.lightBlue.withAlpha(30),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PortalPage(
-                                            link: 'https://www.mozilla.com',
-                                            routes: 'programs',
-                                          )));
-                            },
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(
-                                      'assets/images/code.png',
-                                      height: 60,
-                                      width: 60,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Programs',
-                                    style: GoogleFonts.lato(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .headline5,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  Text(
-                                    'View running programs ',
-                                    style: GoogleFonts.lato(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400),
-                                  )
-                                ],
+                      Card(
+                        color: Colors.yellow[50],
+                        clipBehavior: Clip.antiAlias,
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: InkWell(
+                          splashColor: Colors.blue.withAlpha(30),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PortalPage(
+                                    link: 'http://192.168.1.8:8085'),
                               ),
+                            );
+                          },
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(
+                                    'assets/images/notification.png',
+                                    height: 60,
+                                    width: 60,
+                                  ),
+                                ),
+                                Text(
+                                  'Alerts',
+                                  style: GoogleFonts.lato(
+                                      textStyle:
+                                          Theme.of(context).textTheme.headline5,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  'View all alerts',
+                                  style: GoogleFonts.lato(
+                                      textStyle:
+                                          Theme.of(context).textTheme.subtitle2,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400),
+                                )
+                              ],
                             ),
                           ),
                         ),
                       ),
-                      Hero(
-                        tag: 'inputs',
-                        child: Card(
-                          color: Colors.amber[50],
-                          clipBehavior: Clip.antiAlias,
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
+                      Card(
+                        color: Colors.blueGrey[50],
+                        clipBehavior: Clip.antiAlias,
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: InkWell(
+                          splashColor: Colors.blue.withAlpha(30),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PortalPage(
+                                        link: 'https://www.google.com/')));
+                          },
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(
+                                    'assets/images/iot.png',
+                                    height: 60,
+                                    width: 60,
+                                  ),
+                                ),
+                                Text(
+                                  'IOT',
+                                  style: GoogleFonts.lato(
+                                      textStyle:
+                                          Theme.of(context).textTheme.headline5,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  'All IOT devices',
+                                  style: GoogleFonts.lato(
+                                      textStyle:
+                                          Theme.of(context).textTheme.subtitle2,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400),
+                                )
+                              ],
+                            ),
                           ),
-                          child: InkWell(
-                            splashColor: Colors.blue.withAlpha(30),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Inputs_page()));
-                            },
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(
-                                      'assets/images/smartphone.png',
-                                      height: 60,
-                                      width: 60,
-                                    ),
+                        ),
+                      ),
+                      Card(
+                        color: Colors.indigo[50],
+                        elevation: 5,
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: InkWell(
+                          splashColor: Colors.lightBlue.withAlpha(30),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PortalPage(
+                                        link: 'https://www.mozilla.com')));
+                          },
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(
+                                    'assets/images/code.png',
+                                    height: 60,
+                                    width: 60,
                                   ),
-                                  Text(
-                                    'Sync',
-                                    style: GoogleFonts.lato(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .headline5,
-                                        fontWeight: FontWeight.w500),
+                                ),
+                                Text(
+                                  'Programs',
+                                  style: GoogleFonts.lato(
+                                      textStyle:
+                                          Theme.of(context).textTheme.headline5,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  'View running programs ',
+                                  style: GoogleFonts.lato(
+                                      textStyle:
+                                          Theme.of(context).textTheme.subtitle2,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Card(
+                        color: Colors.amber[50],
+                        clipBehavior: Clip.antiAlias,
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: InkWell(
+                          splashColor: Colors.blue.withAlpha(30),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Inputs_page()));
+                          },
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(
+                                    'assets/images/smartphone.png',
+                                    height: 60,
+                                    width: 60,
                                   ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  Text(
-                                    'Enter values manually',
-                                    style: GoogleFonts.lato(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400),
-                                  )
-                                ],
-                              ),
+                                ),
+                                Text(
+                                  'Sync',
+                                  style: GoogleFonts.lato(
+                                      textStyle:
+                                          Theme.of(context).textTheme.headline5,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  'Enter values manually',
+                                  style: GoogleFonts.lato(
+                                      textStyle:
+                                          Theme.of(context).textTheme.subtitle2,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400),
+                                )
+                              ],
                             ),
                           ),
                         ),
@@ -445,7 +549,7 @@ class Landing extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Card(
-                            color: Colors.white.withOpacity(1.0),
+                            color: Colors.orange[50],
                             elevation: 10,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18),
@@ -460,7 +564,10 @@ class Landing extends StatelessWidget {
                                     label: Text("User"),
                                     style: TextButton.styleFrom(
                                         primary: Colors.blueGrey),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .restorablePush(_userdialogBuilder);
+                                    },
                                   ),
                                   VerticalDivider(
                                     thickness: 50,
@@ -472,7 +579,10 @@ class Landing extends StatelessWidget {
                                     label: Text("Logout"),
                                     style: TextButton.styleFrom(
                                         primary: Colors.blueGrey),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .restorablePush(_logoutBuilder);
+                                    },
                                   )
                                 ],
                               ),
@@ -491,3 +601,35 @@ class Landing extends StatelessWidget {
     );
   }
 }
+
+// Future<dynamic> logout() async {
+//   Uri base_url = Uri.parse("http://192.168.1.8:5020/users/logout_mobile");
+//   var response = await http.post(base_url,
+//       body: {"userId": globaluserid, "device_id": globalDeviceId});
+//
+//   if (response.statusCode == 200) {
+//     Map<String, dynamic> data = jsonDecode(response.body);
+//     if (data.keys.contains("success")) {
+//       Navigator.push(
+//           context, MaterialPageRoute(builder: (context) => LoginPage()));
+//     } else if (data.keys.contains("error")) {
+//       Navigator.of(context).pop();
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(
+//           content: Text("Can not logout, Error: ${data["error"]}"),
+//           duration: Duration(seconds: 1),
+//           action: SnackBarAction(label: "OK", onPressed: () {}),
+//         ),
+//       );
+//     }
+//   } else {
+//     Navigator.of(context).pop();
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       SnackBar(
+//         content: Text("Unable to connect... Check network]}"),
+//         duration: Duration(seconds: 1),
+//         action: SnackBarAction(label: "OK", onPressed: () {}),
+//       ),
+//     );
+//   }
+// }

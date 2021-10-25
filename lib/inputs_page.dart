@@ -61,7 +61,7 @@ class _ConfigsState extends State<Configs> {
     'syspass': null,
     'netmask': null,
     'gateway': null,
-    'network_file': "/etc/netplan/"
+    'network_file': null
   };
 
   TextEditingController _static_ip = TextEditingController();
@@ -228,7 +228,7 @@ class _ConfigsState extends State<Configs> {
               formData['syspass'] = _syspass.text;
               formData['netmask'] = _netmask.text;
               formData['gateway'] = _gateway.text;
-              formData['network_file'] = _network_file.text;
+              formData['network_file'] = "/etc/network/${_network_file.text}";
               // trying to make json file out of formData
               // print('trying to convert json file');
               dynamic config = json.encode(formData);

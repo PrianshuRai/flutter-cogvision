@@ -11,7 +11,8 @@ import 'package:http/http.dart' as http;
 
 // unique id of the device
 var globaluserid = null;
-bool loginStatus = true;
+var globalDeviceId = null;
+bool loginStatus = false;
 
 // this class contains all visual elements of
 // login page
@@ -151,11 +152,11 @@ class _LoginPageState extends State<LoginPage> {
     "device_id": null
   };
 
-  void _GetId() async {
-    var device_id = await _getId();
-    params["device_id"] = device_id;
-    print('device id $device_id updating params ${params['device_id']}');
-  }
+  // void _GetId() async {
+  //   var device_id = await _getId();
+  //   params["device_id"] = device_id;
+  //   print('device id $device_id updating params ${params['device_id']}');
+  // }
 
   // get device_id = await _getId();
 
@@ -380,6 +381,7 @@ class _LoginPageState extends State<LoginPage> {
                                 //  _GetId();
                                 var device_id = await _getId();
                                 params["device_id"] = device_id;
+                                globalDeviceId = device_id;
                                 print(
                                     'device id---->>>>> $device_id updating params ${params['device_id']}');
                                 print('you tapped button');
