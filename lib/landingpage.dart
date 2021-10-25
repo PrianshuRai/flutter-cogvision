@@ -92,26 +92,28 @@ class _LandingState extends State<Landing> {
               CircularProgressIndicator();
               try {
                 var base_url =
-                    Uri.parse("http://192.168.1.8:5020/users/logout_mobile");
+                    Uri.parse("http://192.168.1.10:5020/users/logout_mobile");
                 print("Map made : ${globalDeviceId} and user $globaluserid}");
-                var response = await http.post(base_url, body: {
-                  "userId": globaluserid,
-                  "device_id": globalDeviceId
-                });
+                var response = await http.post(base_url,
+                    body: jsonEncode(
+                        {"userId": globaluserid, "device_id": globalDeviceId}));
                 print("response body : ${response.body}");
 
                 if (response.statusCode == 200) {
                   Map<String, dynamic> data = jsonDecode(response.body);
                   print("data: $data");
-                  if (data.keys.contains("success")) {
+                  if (data["status"] == "successfull") {
+                    print('changing route');
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LoginPage()));
-                  } else if (data.keys.contains("error")) {
+                  } else if (data["status"] == "failed") {
+                    print("error");
+                    print(data["error"]);
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content:
-                            Text("Can not logout, Error: ${data["error"]}"),
+                            Text("Can not logout, Error: ${data["reason"]}"),
                         duration: Duration(seconds: 1),
                         action: SnackBarAction(label: "OK", onPressed: () {}),
                       ),
@@ -129,7 +131,7 @@ class _LandingState extends State<Landing> {
                   );
                 }
               } catch (e) {
-                print("exception function running");
+                print("exception function running $e");
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

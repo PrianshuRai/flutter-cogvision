@@ -164,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
     // start loding animation on function call
     Navigator.of(context).restorablePush(_dialogBuilder);
 
-    String base_url = "http://192.168.1.8:5020/users/login";
+    String base_url = "http://192.168.1.10:5020/users/login";
     var response =
         await http.post(Uri.parse(base_url), body: jsonEncode(params));
     print('params: $params');

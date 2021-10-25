@@ -15,8 +15,8 @@ void main() {
         primaryColor: Colors.blue[100],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Landing(),
-      // home: loginStatus ? Landing() : LoginPage(), // FileHandle()
+      // home: Landing(),
+      home: loginStatus ? Landing() : LoginPage(), // FileHandle()
     ),
   );
 }
