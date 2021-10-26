@@ -237,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
             fit: BoxFit.fill,
           ),
           elevation: 0,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
         ),
         body: Stack(
           children: [
