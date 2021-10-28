@@ -5,6 +5,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:page_transition/page_transition.dart';
 
 import './MainPage.dart';
 import './inputs_page.dart';
@@ -97,6 +98,7 @@ class _LandingState extends State<Landing> {
                 var response = await http.post(base_url,
                     body: jsonEncode(
                         {"userId": globaluserid, "device_id": globalDeviceId}));
+                globaluserid = null;
                 print("response body : ${response.body}");
 
                 if (response.statusCode == 200) {
@@ -229,7 +231,7 @@ class _LandingState extends State<Landing> {
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 8,
                     padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     children: <Widget>[
                       Card(
                         color: Colors.blue[50],
@@ -241,10 +243,14 @@ class _LandingState extends State<Landing> {
                         child: InkWell(
                           splashColor: Colors.blue.withAlpha(30),
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MainPage()));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => MainPage()));
+                            Navigator.of(context).push(PageTransition(
+                                type: PageTransitionType.rightToLeftWithFade,
+                                alignment: Alignment.bottomCenter,
+                                child: MainPage()));
                           },
                           child: Center(
                             child: Column(
@@ -291,12 +297,25 @@ class _LandingState extends State<Landing> {
                         child: InkWell(
                           splashColor: Colors.blue.withAlpha(30),
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PortalPage(
-                                        link:
-                                            'http://192.168.1.8:8085/mobile1iot?userId=$globaluserid')));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => PortalPage(
+                            //             link:
+                            //                 "http://192.168.1.10:8085/mobile1iot?userId=$globaluserid"
+                            //         ),
+                            //     ),
+                            // );
+                            Navigator.of(context).push(
+                              PageTransition(
+                                type: PageTransitionType.rightToLeftWithFade,
+                                alignment: Alignment.bottomCenter,
+                                child: PortalPage(
+                                    link:
+                                        // "http://192.168.1.10:8085/mobile1iot?userId=$globaluserid"),
+                                        "http://192.168.1.10:8085/login"),
+                              ),
+                            );
                           },
                           child: Center(
                             child: Column(
@@ -343,13 +362,20 @@ class _LandingState extends State<Landing> {
                         child: InkWell(
                           splashColor: Colors.blue.withAlpha(30),
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const PortalPage(
-                                    link: 'http://192.168.1.8:8085'),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => const PortalPage(
+                            //         link: 'http://192.168.1.8:8085/mobile1iot'),
+                            //   ),
+                            // );
+                            Navigator.of(context).push(PageTransition(
+                              type: PageTransitionType.rightToLeftWithFade,
+                              alignment: Alignment.bottomCenter,
+                              child: PortalPage(
+                                  link:
+                                      "http://192.168.1.10:8085/mobile2report"),
+                            ));
                           },
                           child: Center(
                             child: Column(
@@ -396,11 +422,18 @@ class _LandingState extends State<Landing> {
                         child: InkWell(
                           splashColor: Colors.blue.withAlpha(30),
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PortalPage(
-                                        link: 'https://www.google.com/')));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => PortalPage(
+                            //             link: 'https://www.google.com/')));
+                            Navigator.of(context).push(PageTransition(
+                              type: PageTransitionType.rightToLeftWithFade,
+                              alignment: Alignment.bottomCenter,
+                              child: PortalPage(
+                                  link:
+                                      "http://192.168.1.10:8085/mobile1iot?userId=$globaluserid"),
+                            ));
                           },
                           child: Center(
                             child: Column(
@@ -447,11 +480,17 @@ class _LandingState extends State<Landing> {
                         child: InkWell(
                           splashColor: Colors.lightBlue.withAlpha(30),
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PortalPage(
-                                        link: 'https://www.mozilla.com')));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => PortalPage(
+                            //             link: 'https://www.mozilla.com')));
+                            Navigator.of(context).push(PageTransition(
+                              type: PageTransitionType.rightToLeftWithFade,
+                              alignment: Alignment.bottomCenter,
+                              child:
+                                  PortalPage(link: "https://www.mozilla.com"),
+                            ));
                           },
                           child: Center(
                             child: Column(
@@ -498,10 +537,15 @@ class _LandingState extends State<Landing> {
                         child: InkWell(
                           splashColor: Colors.blue.withAlpha(30),
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Inputs_page()));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => Inputs_page()));
+                            Navigator.of(context).push(PageTransition(
+                              type: PageTransitionType.rightToLeftWithFade,
+                              alignment: Alignment.bottomCenter,
+                              child: Inputs_page(),
+                            ));
                           },
                           child: Center(
                             child: Column(
@@ -546,16 +590,33 @@ class _LandingState extends State<Landing> {
                     right: 50.0,
                     child: Container(
                       // height: 40,
-                      // width: 100,
+                      width: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                              color: Color(0xFF5C5EDD).withOpacity(0.6),
+                              offset: const Offset(1.1, 4.0),
+                              blurRadius: 8.0),
+                        ],
+                        gradient: LinearGradient(
+                          colors: <Color>[
+                            Color(0xFF738AE6),
+                            Color(0xFF5C5EDD),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Card(
-                            color: Colors.orange[50],
+                            color: Colors.transparent,
                             elevation: 10,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18),
-                            ),
+                            // shape: RoundedRectangleBorder(
+                            //   borderRadius: BorderRadius.circular(18),
+                            // ),
                             child: Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 18.0),
