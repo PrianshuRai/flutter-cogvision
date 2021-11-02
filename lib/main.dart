@@ -1,6 +1,5 @@
 import 'package:config_generator/login_page.dart';
 import 'package:flutter/material.dart';
-import 'inputs_page.dart';
 import 'landingpage.dart';
 
 // import 'package:google_fonts/google_fonts.dart';

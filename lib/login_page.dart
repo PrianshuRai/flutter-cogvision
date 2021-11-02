@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 // unique id of the device
 var globaluserid = null;
 var globalDeviceId = null;
-bool loginStatus = true;
+bool loginStatus = false;
 
 // this class contains all visual elements of
 // login page
@@ -94,9 +94,14 @@ class _LoginPageState extends State<LoginPage> {
             onPressed: () {
               // Navigator.push(
               //     context, MaterialPageRoute(builder: (context) => Landing()));
-              Navigator.of(context).pop();
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (BuildContext context) => Landing()));
+              // Navigator.of(context).pop();
+              // Navigator.of(context).pushReplacement(MaterialPageRoute(
+              //     builder: (BuildContext context) => Landing()));
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => new Landing()),
+                  (Route<dynamic> route) => false);
             },
             child: Text('OK'),
           )
@@ -164,7 +169,8 @@ class _LoginPageState extends State<LoginPage> {
     // start loding animation on function call
     Navigator.of(context).restorablePush(_dialogBuilder);
 
-    String base_url = "http://192.168.1.10:5020/users/login1";
+    String base_url =
+        "http://192.168.1.10:5020/users/login1"; //"http://192.168.1.10:5020/users/login1";   //184.105.174.77:5021/login1";
     var response =
         await http.post(Uri.parse(base_url), body: jsonEncode(params));
     print('params: $params');
@@ -297,10 +303,24 @@ class _LoginPageState extends State<LoginPage> {
                                   color: Color(0xFF738AE6)),
                               filled: true,
                               fillColor: Colors.white,
-                              border: const OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.transparent),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(15.0),
                                 ),
+                              ),
+                              focusedBorder: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(15.0),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent),
+                              ),
+                              floatingLabelStyle: GoogleFonts.lato(
+                                textStyle:
+                                    Theme.of(context).textTheme.bodyText2,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 28,
+                                color: Color(0xFF526EE0),
                               ),
                             ),
                             autofillHints: [AutofillHints.email],
@@ -358,6 +378,25 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(15.0),
                                 ),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.transparent),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15.0),
+                                ),
+                              ),
+                              focusedBorder: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(15.0),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent),
+                              ),
+                              floatingLabelStyle: GoogleFonts.lato(
+                                textStyle:
+                                    Theme.of(context).textTheme.bodyText2,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 28,
+                                color: Color(0xFF526EE0),
                               ),
                             ),
                             autofillHints: [AutofillHints.password],
@@ -466,8 +505,18 @@ Map<int, dynamic> error_flag = {
 };
 
 // loading indicator
-// showLoaderDialog(BuildContext context) {
-//   AlertDialog alert = AlertDialog(
+// showExitDialog(BuildContext context) {
+//   AlertDialog exit = AlertDialog(
+//     title: Text(
+//       'Warning! ⚠️',
+//       textAlign: TextAlign.center,
+//       style: GoogleFonts.lato(
+//         textStyle: Theme.of(context).textTheme.headline4,
+//         color: Colors.black54,
+//         fontSize: 24,
+//         fontWeight: FontWeight.w700,
+//       ),
+//     ),
 //     content: new Row(
 //       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 //       children: [
@@ -487,7 +536,7 @@ Map<int, dynamic> error_flag = {
 //     barrierDismissible: true,
 //     context: context,
 //     builder: (BuildContext context) {
-//       return alert;
+//       return exit;
 //     },
 //   );
 // }
