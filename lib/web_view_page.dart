@@ -35,6 +35,10 @@ class _PortalPageState extends State<PortalPage> {
       body: Container(
         child: Stack(
           children: [
+            // make sure to give following code
+            // to html file for proper scaling
+            //
+            // <meta name="viewport" content="width=device-width, initial-scale=1">
             WebView(
               initialUrl: widget.link,
               javascriptMode: JavascriptMode.unrestricted,

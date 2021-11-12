@@ -672,11 +672,11 @@ class _LandingState extends State<Landing> {
                               //     MaterialPageRoute(
                               //         builder: (context) => PortalPage(
                               //             link: 'https://www.google.com/')));
-                              // Navigator.of(context).push(PageTransition(
-                              //   type: PageTransitionType.rightToLeftWithFade,
-                              //   alignment: Alignment.bottomCenter,
-                              //   child: FaceReg(),
-                              // ));
+                              Navigator.of(context).push(PageTransition(
+                                type: PageTransitionType.rightToLeftWithFade,
+                                alignment: Alignment.bottomCenter,
+                                child: FaceReg(),
+                              ));
                             },
                             child: Center(
                               child: Column(

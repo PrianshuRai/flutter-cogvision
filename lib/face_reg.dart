@@ -35,11 +35,21 @@ class _FaceRegState extends State<FaceReg> {
   }
 
   Future<XFile> saveImage(String imagePath) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final name = basename(imagePath);
-    final image = File('${directory.path}/$name');
-
-    return XFile(imagePath); //.copy(image.path);
+    try {
+      print("trying to save the file...");
+      final directory = await getApplicationDocumentsDirectory();
+      print("directory name: $directory");
+      final name = basename(imagePath);
+      final image = File('${directory.path}/$name');
+      print("file saved to the new location: $image");
+      print(XFile(imagePath));
+      
+      return XFile(imagePath); 
+    } on Exception catch (e) {
+      print("some error has occured... Exception is $e");
+      return XFile(imagePath);
+    }
+//.copy(image.path);
   }
 
   Future<ImageSource?> showImageSource(BuildContext context) async {
