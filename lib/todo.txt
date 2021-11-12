@@ -10,8 +10,8 @@
 //@ TODO visual enhacements
 // ***********************************************************************
 
-//@ TODO create face_reg page
-//@ TODO add a tile for taking image
+//@ TODO create face_reg page -- done
+//@ TODO add a tile for taking image -- done
 //@ TODO give pop up for choosing camera or galary
 //@ TODO save image into folder of documents
 //@ TODO add second tile for choosing from camera or galllary

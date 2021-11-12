@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:page_transition/page_transition.dart';
@@ -166,6 +167,56 @@ class _LandingState extends State<Landing> {
     );
   }
 
+  static Route<Object?> _exitBuilder(
+      BuildContext context, Object? arguments) {
+    return DialogRoute<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        insetPadding: EdgeInsets.all(15),
+        title: Text(
+          'WARNING ⚠️',
+          textAlign: TextAlign.center,
+          style: GoogleFonts.lato(
+            textStyle: Theme.of(context).textTheme.headline4,
+            color: Colors.black54,
+            fontSize: 28,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        content: Text(
+          "Do you really want to exit?",
+          textAlign: TextAlign.center,
+          style: GoogleFonts.lato(
+            textStyle: Theme.of(context).textTheme.headline4,
+            color: Colors.black54,
+            fontSize: 22,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        actions: [
+          TextButton(
+              onPressed: (){
+                SystemNavigator.pop();
+              },
+              child: Text("Yes, I'll quit",
+                style: TextStyle(fontSize: 18),
+              )
+          ),
+          TextButton(
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+              child: Text("No, I'll stay",
+                style: TextStyle(fontSize: 18),
+              )
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -229,7 +280,7 @@ class _LandingState extends State<Landing> {
                 flex: 3,
                 child: Container(
                   child: Image.asset(
-                    'assets/images/fly.png',
+                    'assets/images/undraw_add_information.png',
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -450,7 +501,7 @@ class _LandingState extends State<Landing> {
                                 alignment: Alignment.bottomCenter,
                                 child: PortalPage(
                                     link:
-                                        "http://192.168.1.10:8085/mobile1iot?userId=$globaluserid"),
+                                        "http://184.105.174.77:8086/login"),
                               ));
                             },
                             child: Center(
@@ -621,11 +672,11 @@ class _LandingState extends State<Landing> {
                               //     MaterialPageRoute(
                               //         builder: (context) => PortalPage(
                               //             link: 'https://www.google.com/')));
-                              Navigator.of(context).push(PageTransition(
-                                type: PageTransitionType.rightToLeftWithFade,
-                                alignment: Alignment.bottomCenter,
-                                child: FaceReg(),
-                              ));
+                              // Navigator.of(context).push(PageTransition(
+                              //   type: PageTransitionType.rightToLeftWithFade,
+                              //   alignment: Alignment.bottomCenter,
+                              //   child: FaceReg(),
+                              // ));
                             },
                             child: Center(
                               child: Column(
@@ -700,7 +751,7 @@ class _LandingState extends State<Landing> {
                           borderRadius: BorderRadius.circular(18),
 
                           child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(18),
@@ -722,14 +773,13 @@ class _LandingState extends State<Landing> {
                                     child: Row(
                                       children: [
                                         TextButton.icon(
-                                          icon: Icon(Icons.person_outlined),
-                                          label: Text("User"),
+                                          icon: Icon(Icons.logout),
+                                          label: Text("Logout"),
                                           style: TextButton.styleFrom(
                                               primary: Colors.blueGrey),
                                           onPressed: () {
                                             Navigator.of(context)
-                                                .restorablePush(
-                                                    _userdialogBuilder);
+                                                .restorablePush(_logoutBuilder);
                                           },
                                         ),
                                         VerticalDivider(
@@ -738,13 +788,30 @@ class _LandingState extends State<Landing> {
                                           color: Colors.black12,
                                         ),
                                         TextButton.icon(
-                                          icon: Icon(Icons.logout),
-                                          label: Text("Logout"),
+                                          icon: Icon(Icons.person_outlined),
+                                          label: Text("User"),
                                           style: TextButton.styleFrom(
                                               primary: Colors.blueGrey),
                                           onPressed: () {
                                             Navigator.of(context)
-                                                .restorablePush(_logoutBuilder);
+                                                .restorablePush(
+                                                _userdialogBuilder);
+                                          },
+                                        ),
+                                        VerticalDivider(
+                                          thickness: 50,
+                                          width: 1,
+                                          color: Colors.black12,
+                                        ),
+                                        TextButton.icon(
+                                          icon: Icon(
+                                              Icons.door_back_door_outlined),
+                                          label: Text('Exit'),
+                                          style: TextButton.styleFrom(
+                                              primary: Colors.blueGrey),
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .restorablePush(_exitBuilder);
                                           },
                                         )
                                       ],

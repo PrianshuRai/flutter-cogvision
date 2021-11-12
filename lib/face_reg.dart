@@ -44,28 +44,29 @@ class _FaceRegState extends State<FaceReg> {
 
   Future<ImageSource?> showImageSource(BuildContext context) async {
     if (Platform.isIOS) {
+      //@ TODO add tags in pinfo file in ios folder
       return showCupertinoModalPopup<ImageSource>(
         context: context,
-        builder: (context) =>
-            CupertinoActionSheet(
-              actions: [
-                CupertinoActionSheetAction(
-                  onPressed: () {
-                    Navigator.of(context).pop(ImageSource.camera);
-                  },
-                  child: Text('Camera'),
-                ),
-                CupertinoActionSheetAction(
-                  onPressed: () {
-                    Navigator.of(context).pop(ImageSource.gallery);
-                  },
-                  child: Text('Gallery'),
-                ),
-              ],
+        builder: (context) => CupertinoActionSheet(
+          actions: [
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.of(context).pop(ImageSource.camera);
+              },
+              child: Text('Camera'),
             ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.of(context).pop(ImageSource.gallery);
+              },
+              child: Text('Gallery'),
+            ),
+          ],
+        ),
       );
     } else {
       return showModalBottomSheet(
+        barrierColor: Colors.black26.withOpacity(.3),
           backgroundColor: Colors.transparent,
           elevation: 0,
           context: context,
@@ -88,7 +89,7 @@ class _FaceRegState extends State<FaceReg> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(18),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                  filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(22),
@@ -122,8 +123,9 @@ class _FaceRegState extends State<FaceReg> {
                         ),
                         Padding(
                           padding:
-                          const EdgeInsets.only(top: 60.0, bottom: 60.0),
+                              const EdgeInsets.only(top: 60.0, bottom: 60.0),
                           child: VerticalDivider(
+                            thickness: 1.5,
                             width: 1,
                             color: Colors.black12,
                           ),
@@ -155,202 +157,226 @@ class _FaceRegState extends State<FaceReg> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Image.asset(
           'assets/images/bannar.png',
           fit: BoxFit.fill,
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         // leading: Icon(icon: ),
       ),
       body: Container(
-        color: Colors.red.withAlpha(50),
-        // decoration: BoxDecoration(
-        //   image: DecorationImage(
-        //       image: AssetImage("assets/images/bluish.png"), fit: BoxFit.fill),
-        // ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(0),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25),
-                      height: 150,
-                      padding: EdgeInsets.all(2),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(22)),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: Color(0xFFFFB295).withOpacity(0.6),
-                              offset: const Offset(1.1, 4.0),
-                              blurRadius: 8.0),
-                        ],
-                        gradient: LinearGradient(
-                          colors: <Color>[
-                            Color(0xFFFA7D82),
-                            Color(0xFFFFB295),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
+        // color: Colors.red.withAlpha(50),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/images/backgroundTexture_abstract.jpg"), fit: BoxFit.cover),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 25),
+                  height: 170,
+                  padding: EdgeInsets.all(2),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(22)),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: Color(0xFFFFB295).withOpacity(0.6),
+                          offset: const Offset(1.1, 4.0),
+                          blurRadius: 8.0),
+                    ],
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFFFA7D82),
+                        Color(0xFFFFB295),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  child: Container(
+                    alignment: Alignment.topCenter,
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(height:20),
+                        Icon(
+                          Icons.camera_alt_rounded,
+                          color: Colors.white.withOpacity(0.7),
+                          size: 36,
                         ),
-                      ),
-                      child: Container(
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.camera_alt_rounded,
-                              color: Colors.white.withOpacity(0.8),
-                              size: 32,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            AnimatedTextKit(
-                              repeatForever: true,
-                              stopPauseOnTap: false,
-                              animatedTexts: [
-                                ColorizeAnimatedText(
-                                  'Choose Image',
-                                  colors: <Color>[
-                                    Color(0xFFFFCCBC),
-                                    Color(0xFFFFCC80),
-                                    Color(0xFFCE93D8),
-                                    Color(0xFFF48FB1),
-                                    Color(0xFFFFCCBC),
-                                  ],
-                                  textStyle: GoogleFonts.lato(
-                                      textStyle: Theme
-                                          .of(context)
-                                          .textTheme
-                                          .headline3,
-                                      fontWeight: FontWeight.w900),
-                                ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        AnimatedTextKit(
+                          repeatForever: true,
+                          stopPauseOnTap: false,
+                          animatedTexts: [
+                            ColorizeAnimatedText(
+                              'Choose Image',
+                              colors: <Color>[
+                                Color(0xFFFFCCBC),
+                                Color(0xFFFFCC80),
+                                Color(0xFFCE93D8),
+                                Color(0xFFF48FB1),
+                                Color(0xFFFFCCBC),
                               ],
+                              textStyle: GoogleFonts.lato(
+                                  textStyle:
+                                      Theme.of(context).textTheme.headline2,
+                                  fontWeight: FontWeight.w900),
                             ),
                           ],
                         ),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: -15,
+                  right: 50,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      gradient: LinearGradient(
+                        colors: [Color(0xFFFFB295), Color(0xFFFA7D82)],
                       ),
                     ),
-                    Positioned(
-                      bottom: -35,
-                      right: 30,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
-                          padding: EdgeInsets.all(30),
-                          primary: Color(0xFFFA7D82), // <-- Button color
-                          onPrimary: Color(0xFFFFE0B2), // <-- Splash color
-                        ),
-                        onPressed: () {
-                          showImageSource(context);
-                        },
-                        child: Text('Select',
-                          style: TextStyle(fontSize: 18),
-                        ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        shadowColor: Color(0xFFFA7D82),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18)),
+                        //CircleBorder(),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 20, horizontal: 40),
+                        primary: Colors.transparent,
+                        // <-- Button color
+                        onPrimary: Color(0xFFFFE0B2), // <-- Splash color
                       ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 80,
-                ),
-                Stack(
-                  overflow: Overflow.visible,
-                  // clipBehavior: Clip.none,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25),
-                      height: 150,
-                      padding: EdgeInsets.all(2),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(22)),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: Color(0xFF738AE6).withOpacity(0.6),
-                              offset: const Offset(1.1, 4.0),
-                              blurRadius: 8.0),
-                        ],
-                        gradient: LinearGradient(
-                          colors: <Color>[
-                            Color(0xFF5C5EDD),
-                            Color(0xFF738AE6),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          // SizedBox(width: 20,),
-                          Icon(
-                            Icons.verified_rounded,
-                            color: Colors.white.withOpacity(0.8),
-                            size: 32,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          AnimatedTextKit(
-                            repeatForever: true,
-                            stopPauseOnTap: false,
-                            animatedTexts: [
-                              ColorizeAnimatedText(
-                                'Verify Image',
-                                colors: <Color>[
-                                  Color(0xFFD1C4E9),
-                                  Color(0xFFFFCC80),
-                                  Color(0xFFCE93D8),
-                                  Color(0xFFF48FB1),
-                                  Color(0xFFD1C4E9),
-                                ],
-                                textStyle: GoogleFonts.lato(
-                                    textStyle:
-                                    Theme
-                                        .of(context)
-                                        .textTheme
-                                        .headline3,
-                                    fontWeight: FontWeight.w900),
-                              ),
-                            ],
-                          ),
-                        ],
+                      onPressed: () {
+                        showImageSource(context);
+                      },
+                      child: Text(
+                        'Select',
+                        style: TextStyle(fontSize: 18),
                       ),
                     ),
-                    Positioned(
-                      bottom: -35,
-                      right: 35,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
-                          padding: EdgeInsets.all(30),
-                          primary: Color(0xFF5C5EDD), // <-- Button color
-                          onPrimary: Color(0xFFE3F2FD), // <-- Splash color
-                        ),
-                        onPressed: () {
-                          showImageSource(context);
-                        },
-                        child: Text('Select',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                    )
-
-                  ],
-                )
+                  ),
+                ),
               ],
             ),
-          ),
+            SizedBox(
+              height: 80,
+            ),
+            Stack(
+              // overflow: Overflow.visible,
+              clipBehavior: Clip.none,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 25),
+                  height: 170,
+                  padding: EdgeInsets.all(2),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(22)),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: Color(0xFF738AE6).withOpacity(0.6),
+                          offset: const Offset(1.1, 4.0),
+                          blurRadius: 8.0),
+                    ],
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF5C5EDD),
+                        Color(0xFF738AE6),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  child: Container(
+                    alignment: Alignment.topCenter,
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(height: 20,),
+                        Icon(
+                          Icons.verified_rounded,
+                          color: Colors.white.withOpacity(0.8),
+                          size: 32,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        AnimatedTextKit(
+                          repeatForever: true,
+                          stopPauseOnTap: false,
+                          animatedTexts: [
+                            ColorizeAnimatedText(
+                              'Verify Image',
+                              colors: <Color>[
+                                Color(0xFFD1C4E9),
+                                Color(0xFFFFCC80),
+                                Color(0xFFCE93D8),
+                                Color(0xFFF48FB1),
+                                Color(0xFFD1C4E9),
+                              ],
+                              textStyle: GoogleFonts.lato(
+                                  textStyle:
+                                      Theme.of(context).textTheme.headline2,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: -15,
+                  right: 50,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      gradient: LinearGradient(
+                        colors: [Color(0xFF738AE6), Color(0xFF5C5EDD)],
+                      ),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        shadowColor: Color(0xFF5C5EDD),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18)),
+                        //CircleBorder(),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 20, horizontal: 40),
+                        primary: Colors.transparent,
+                        // <-- Button color
+                        onPrimary: Color(0xFFBBDEFB), // <-- Splash color
+                      ),
+                      onPressed: () {
+                        showImageSource(context);
+                      },
+                      child: Text(
+                        'Select',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            )
+          ],
         ),
       ),
     );
