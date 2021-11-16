@@ -1,3 +1,5 @@
+import 'package:CogvisionAI/store_image.dart';
+
 import 'face_reg.dart';
 import 'login_page.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +16,8 @@ void main() {
         primaryColor: Colors.blue[100],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      // home: FaceReg(),
-      home: loginStatus ? Landing() : LoginPage(), // FileHandle()
+      home: getImage(),
+      // home: loginStatus ? Landing() : LoginPage(), // FileHandle()
     ),
   );
 }
