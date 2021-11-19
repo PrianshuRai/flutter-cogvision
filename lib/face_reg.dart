@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class FaceReg extends StatefulWidget {
   const FaceReg({Key? key}) : super(key: key);
@@ -23,6 +24,7 @@ class _FaceRegState extends State<FaceReg> {
   Future _pickImage(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
+      print("image is: $image \nand type is: ${image.runtimeType}");
       if (image == null) return;
 
       final imagePermanent = await saveImage(image.path);
@@ -34,21 +36,62 @@ class _FaceRegState extends State<FaceReg> {
     }
   }
 
-  Future<XFile> saveImage(String imagePath) async {
-    try {
-      print("trying to save the file...");
-      final directory = await getApplicationDocumentsDirectory();
-      print("directory name: $directory");
-      final name = basename(imagePath);
-      final image = File('${directory.path}/$name');
-      print("file saved to the new location: $image");
-      print(XFile(imagePath));
-      
-      return XFile(imagePath); 
-    } on Exception catch (e) {
-      print("some error has occured... Exception is $e");
-      return XFile(imagePath);
+  Future<dynamic> saveImage(String imagePath) async {
+    print('receiving imagePath: $imagePath');
+    await Permission.manageExternalStorage.request();
+    var status = await Permission.manageExternalStorage.status;
+    if (status.isDenied) {
+      // We didn't ask for permission yet or the permission has been denied
+      // before but not permanently.
+      print("permission denied");
+      return;
     }
+    if (status.isGranted) {
+      final directory = await getExternalStorageDirectory();
+      print("directory name: $directory");
+      String mainDir = '';
+      if (directory != null) {
+        var dirName = directory.path.split('/');
+        for (String item in dirName) {
+          if (item == 'Android')
+            break;
+          else {
+            mainDir = mainDir + item + '/';
+            print(mainDir);
+          }
+        }
+        final mainStorage = Directory(mainDir);
+        final myImagePath = '${mainStorage.path}CogvisionAI';
+        print("Image path is as follow: $myImagePath");
+        final myImgDir = await new Directory(myImagePath).create();
+        print("directory made, $myImgDir");
+        try {
+          final name = basename(imagePath);
+          final image = File('${myImgDir.path}/$name');
+          print("file saved to the new location: $image");
+          print(XFile(imagePath));
+
+          return XFile(imagePath);
+        } on Exception catch (e) {
+          print('Unable to create the required file due to error: \n>>$e');
+          print('trying different method---');
+        }
+      }
+    }
+    // try {
+    //   print("trying to save the file...");
+    //   final directory = await getApplicationDocumentsDirectory();
+    //   print("directory name: $directory");
+    //   final name = basename(imagePath);
+    //   final image = File('${directory.path}/$name');
+    //   print("file saved to the new location: $image");
+    //   print(XFile(imagePath));
+    //
+    //   return XFile(imagePath);
+    // } on Exception catch (e) {
+    //   print("some error has occured... Exception is $e");
+    //   return XFile(imagePath);
+    // }
 //.copy(image.path);
   }
 
@@ -99,14 +142,14 @@ class _FaceRegState extends State<FaceReg> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(18),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                  filter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(22),
                       gradient: LinearGradient(
                         colors: <Color>[
-                          Colors.white.withOpacity(0.6),
-                          Colors.white.withOpacity(0.6)
+                          Color(0xFFFFEBEE).withOpacity(0.6),//BBDEFB
+                          Color(0xFFE3F2FD).withOpacity(0.6) // FFCDD2
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -120,8 +163,8 @@ class _FaceRegState extends State<FaceReg> {
                           child: IconButton(
                             onPressed: () {
                               // _pickImage(ImageSource.camera);
-                              Navigator.of(context)
-                                  .pop(_pickImage(ImageSource.camera));
+                              Navigator.pop(context);
+                              _pickImage(ImageSource.camera);
                             },
                             icon: Icon(
                               Icons.camera_alt_rounded,
@@ -144,6 +187,7 @@ class _FaceRegState extends State<FaceReg> {
                           alignment: Alignment.centerRight,
                           child: IconButton(
                             onPressed: () {
+                              Navigator.pop(context);
                               _pickImage(ImageSource.gallery);
                             },
                             icon: Icon(
@@ -391,11 +435,5 @@ class _FaceRegState extends State<FaceReg> {
       ),
     );
   }
-
-// Future openDialog() => showDialog(
-//       context: context,
-//       builder: (context) => AlertDialog(
-//         title: Text,
-//       )
-//     );
 }
+
