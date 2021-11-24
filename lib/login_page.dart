@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
   static Route<Object?> _errorBuilder(BuildContext context, Object? arguments) {
     return DialogRoute<void>(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (BuildContext context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         insetPadding: EdgeInsets.all(15),
@@ -243,7 +243,8 @@ class _LoginPageState extends State<LoginPage> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
-        // extendBodyBehindAppBar: true,
+        extendBody: true,
+        extendBodyBehindAppBar: true,
         // backgroundColor: Colors.white,
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
@@ -252,16 +253,16 @@ class _LoginPageState extends State<LoginPage> {
             fit: BoxFit.fill,
           ),
           elevation: 0,
-          backgroundColor: Color(0xFFFFFFFF),
+          backgroundColor: Colors.white,
         ),
         body: SafeArea(
           child: Container(
-            height: MediaQuery.of(context).size.height * .98,
+            // height: MediaQuery.of(context).size.height * .98,
             decoration: BoxDecoration(
               // image: DecorationImage(
               //     image: ExactAssetImage(
-              //         "assets/images/abstract gradient shape.jpg"),
-              //     fit: BoxFit.cover),
+              //         "assets/images/backgroundTexture_abstract.jpg"),
+              //     fit: BoxFit.fill),
               gradient: LinearGradient(
                 colors: <Color>[
                   Color(0xFFFFFFFF),
@@ -279,7 +280,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Stack(
                     children: <Widget>[
                       Positioned(
-                        top: 15.0,
+                        top: 0.0,
                         left: 10.0,
                         right: 10.0,
                         child: Container(
