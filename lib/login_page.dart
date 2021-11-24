@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'landingpage.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,10 +8,12 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
+import 'landingpage.dart';
+
 // unique id of the device
 var globaluserid = null;
 var globalDeviceId = null;
-bool loginStatus = true;
+bool loginStatus = false;
 bool face_reg_enable = true;
 
 // this class contains all visual elements of
@@ -114,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  String message = '';
+  String _errorMessage = '';
 
   static Route<Object?> _errorBuilder(BuildContext context, Object? arguments) {
     return DialogRoute<void>(
@@ -123,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
       builder: (BuildContext context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         insetPadding: EdgeInsets.all(15),
-        title: Text(
+        content: Text(
           'ERROR! ❌',
           textAlign: TextAlign.center,
           style: GoogleFonts.lato(
@@ -133,7 +134,6 @@ class _LoginPageState extends State<LoginPage> {
             fontWeight: FontWeight.w700,
           ),
         ),
-        content: Text(''),
         actions: [
           TextButton(
             onPressed: () {
@@ -175,7 +175,8 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.of(context).restorablePush(_dialogBuilder);
 
     String base_url =
-        "http://192.168.1.10:5020/users/login1"; //"http://192.168.1.10:5020/users/login1";   // "184.105.174.77:5021/login1";
+        // "http://192.168.1.10:5020/users/login1"; //"http://192.168.1.10:5020/users/login1";
+    "http://184.105.174.77:5021/login1";
     var response =
         await http.post(Uri.parse(base_url), body: jsonEncode(params));
     print('params: $params');
@@ -202,21 +203,22 @@ class _LoginPageState extends State<LoginPage> {
       } else if (data.keys.length <= 1) {
         print('in else block');
         try {
-          Navigator.of(context).restorablePush(_errorBuilder);
           print('in try block');
           if (data.containsKey("error")) {
+            Navigator.of(context).restorablePush(_errorBuilder);
             print('contains error');
-            setState(() {
-              if (message.isEmpty) {
-                message = error_flag[data["error"]];
-              } else {
-                message = "something is not correct";
-              }
-            });
+            // setState(() {
+            //   _errorMessage = error_flag[data['error']];
+            //   // if (_errorMessage.isEmpty) {
+            //   //   _errorMessage = error_flag[data["error"]];
+            //   // } else {
+            //   //   _errorMessage = "something is not correct";
+            //   // }
+            // });
             print('flag changed');
           } else {
             print("second else block");
-            message = 'error';
+            _errorMessage = 'error';
             Navigator.of(context).restorablePush(_errorBuilder);
           }
         } catch (error) {
@@ -254,6 +256,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         body: SafeArea(
           child: Container(
+            height: MediaQuery.of(context).size.height * .98,
             decoration: BoxDecoration(
               // image: DecorationImage(
               //     image: ExactAssetImage(
@@ -271,27 +274,20 @@ class _LoginPageState extends State<LoginPage> {
             ),
             child: Column(
               children: <Widget>[
-                Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
-                      child: Container(
-                        color: Colors.blue[100]!.withAlpha(60),
-                          child: FlutterLogo(size: 300,),
-                      ),
-                    )
-                ),
+                SizedBox(height: 50,),
                 Expanded(
                   child: Stack(
                     children: <Widget>[
                       Positioned(
-                        bottom: 45.0,
+                        top: 15.0,
                         left: 10.0,
                         right: 10.0,
                         child: Container(
                           padding: EdgeInsets.all(2),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(22)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(22)),
                             boxShadow: <BoxShadow>[
                               BoxShadow(
                                   color: Color(0xFF5C5EDD).withOpacity(0.6),
@@ -318,10 +314,12 @@ class _LoginPageState extends State<LoginPage> {
                                   children: <Widget>[
                                     TextFormField(
                                       controller: _email,
-                                      keyboardType: TextInputType.emailAddress,
+                                      keyboardType:
+                                          TextInputType.emailAddress,
                                       style: GoogleFonts.lato(
-                                          textStyle:
-                                              Theme.of(context).textTheme.headline6,
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
                                           color: Colors.blueGrey,
                                           fontWeight: FontWeight.w500),
                                       decoration: InputDecoration(
@@ -331,8 +329,9 @@ class _LoginPageState extends State<LoginPage> {
                                         ),
                                         labelText: "E-mail",
                                         labelStyle: GoogleFonts.lato(
-                                            textStyle:
-                                                Theme.of(context).textTheme.bodyText2,
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2,
                                             fontWeight: FontWeight.w600,
                                             fontSize: 20,
                                             color: Color(0xFF738AE6)),
@@ -343,21 +342,24 @@ class _LoginPageState extends State<LoginPage> {
                                             Radius.circular(15.0),
                                           ),
                                         ),
-                                        enabledBorder: const OutlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.transparent),
+                                        enabledBorder:
+                                            const OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.transparent),
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(15.0),
                                           ),
                                         ),
                                         focusedBorder: new OutlineInputBorder(
-                                          borderRadius: new BorderRadius.circular(15.0),
-                                          borderSide:
-                                              BorderSide(color: Colors.transparent),
+                                          borderRadius:
+                                              new BorderRadius.circular(15.0),
+                                          borderSide: BorderSide(
+                                              color: Colors.transparent),
                                         ),
                                         floatingLabelStyle: GoogleFonts.lato(
-                                          textStyle:
-                                              Theme.of(context).textTheme.bodyText2,
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2,
                                           fontWeight: FontWeight.w600,
                                           fontSize: 28,
                                           color: Color(0xFF526EE0),
@@ -372,8 +374,7 @@ class _LoginPageState extends State<LoginPage> {
                                         if (value.length < 9) {
                                           return 'Something is wrong here';
                                         }
-                                        if (!value.contains('@') ||
-                                            !value.contains('cogvision.ai')) {
+                                        if (!value.contains('@') || !value.contains('.')) {
                                           return "Email is incorrect";
                                         }
                                         return null;
@@ -386,8 +387,9 @@ class _LoginPageState extends State<LoginPage> {
                                       controller: _password,
                                       obscureText: visible,
                                       style: GoogleFonts.lato(
-                                          textStyle:
-                                              Theme.of(context).textTheme.headline6,
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
                                           color: Colors.blueGrey,
                                           fontWeight: FontWeight.w500),
                                       decoration: InputDecoration(
@@ -407,8 +409,9 @@ class _LoginPageState extends State<LoginPage> {
                                         ),
                                         labelText: "Password",
                                         labelStyle: GoogleFonts.lato(
-                                            textStyle:
-                                                Theme.of(context).textTheme.bodyText2,
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2,
                                             fontWeight: FontWeight.w600,
                                             fontSize: 20,
                                             color: Color(0xFF738AE6)),
@@ -419,21 +422,24 @@ class _LoginPageState extends State<LoginPage> {
                                             Radius.circular(15.0),
                                           ),
                                         ),
-                                        enabledBorder: const OutlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.transparent),
+                                        enabledBorder:
+                                            const OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.transparent),
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(15.0),
                                           ),
                                         ),
                                         focusedBorder: new OutlineInputBorder(
-                                          borderRadius: new BorderRadius.circular(15.0),
-                                          borderSide:
-                                              BorderSide(color: Colors.transparent),
+                                          borderRadius:
+                                              new BorderRadius.circular(15.0),
+                                          borderSide: BorderSide(
+                                              color: Colors.transparent),
                                         ),
                                         floatingLabelStyle: GoogleFonts.lato(
-                                          textStyle:
-                                              Theme.of(context).textTheme.bodyText2,
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2,
                                           fontWeight: FontWeight.w600,
                                           fontSize: 28,
                                           color: Color(0xFF526EE0),
@@ -457,10 +463,11 @@ class _LoginPageState extends State<LoginPage> {
                                       height: 20,
                                     ),
                                     Text(
-                                      '$message',
+                                      '$_errorMessage',
                                       style: GoogleFonts.lato(
-                                        textStyle:
-                                            Theme.of(context).textTheme.bodyText2,
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -468,29 +475,35 @@ class _LoginPageState extends State<LoginPage> {
                                       child: Text(
                                         'Submit',
                                         style: GoogleFonts.lato(
-                                            textStyle:
-                                                Theme.of(context).textTheme.headline6,
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .headline6,
                                             color: Colors.white,
                                             fontWeight: FontWeight.w700),
                                       ),
                                       style: ElevatedButton.styleFrom(
                                         primary: Color(0xFF738AE6),
                                         onPrimary: Colors.blueGrey[900],
-                                        fixedSize:
-                                            Size(MediaQuery.of(context).size.width, 50),
+                                        fixedSize: Size(
+                                            MediaQuery.of(context).size.width,
+                                            50),
                                         shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(50)),
+                                            borderRadius:
+                                                BorderRadius.circular(50)),
                                       ),
                                       onPressed: () async {
-                                        if (_globalKey.currentState!.validate()) {
+                                        if (_globalKey.currentState!
+                                            .validate()) {
                                           // setState(() async {
                                           // _isLoading = true;
                                           // _isLoading
                                           //     ? showLoaderDialog(context)
                                           //     : showErrorDialog(context);
                                           // });
-                                          params['email'] = _email.text.toLowerCase();
-                                          print('email saved ${params['email']}');
+                                          params['email'] =
+                                              _email.text.toLowerCase();
+                                          print(
+                                              'email saved ${params['email']}');
                                           params['password'] = _password.text;
                                           //  _GetId();
                                           var device_id = await _getId();
@@ -501,7 +514,8 @@ class _LoginPageState extends State<LoginPage> {
                                           print('you tapped button');
                                           login();
                                         } else {
-                                          print('Error... unable to connect to API');
+                                          print(
+                                              'Error... unable to connect to API');
                                         }
                                         // GetData();
                                         // print("get data : $pr");
@@ -641,3 +655,22 @@ dynamic spinkit = SpinKitFadingCube(
 //     },
 //   );
 // }
+
+class customCard extends StatefulWidget {
+  @override
+  State<customCard> createState() => _customCardState();
+}
+
+class _customCardState extends State<customCard> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * .99,
+      color: Colors.transparent,
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        elevation: 1,
+      ),
+    );
+  }
+}

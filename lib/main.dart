@@ -1,5 +1,3 @@
-import 'package:CogvisionAI/store_image.dart';
-
 import 'face_reg.dart';
 import 'login_page.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +14,14 @@ void main() {
         primaryColor: Colors.blue[100],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: getImage(),
-      // home: loginStatus ? Landing() : LoginPage(), // FileHandle()
+      // home: getImage(),
+      home: loginStatus ? Landing() : LoginPage(), // FileHandle()
     ),
   );
 }
 
+// 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     (expiry: jan 2022)
+// you can find this project on https://github.com/PrianshuRai
 // to start the login, set - home: LoginPage()
 // to start the app, set - home: Landing()
 // to start the inputs, set - home: Inputs_page()

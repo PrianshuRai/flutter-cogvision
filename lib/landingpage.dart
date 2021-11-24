@@ -95,7 +95,7 @@ class _LandingState extends State<Landing> {
               CircularProgressIndicator();
               try {
                 var base_url = Uri.parse(
-                    "http://192.168.1.10:5020/users/logout_mobile"); //"http://192.168.1.10:5020/users/logout_mobile"   //http://184.105.174.77:5021/logout_mobile
+                    "http://184.105.174.77:5021/logout_mobile"); //"http://192.168.1.10:5020/users/logout_mobile"   //http://184.105.174.77:5021/logout_mobile
                 print("Map made : ${globalDeviceId} and user $globaluserid}");
                 var response = await http.post(base_url,
                     body: jsonEncode(
@@ -121,9 +121,9 @@ class _LandingState extends State<Landing> {
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content:
-                            Text("Can not logout, Error: ${data["reason"]}"),
-                        duration: Duration(seconds: 1),
+                        content: Text(
+                            "Can not logout, It seems something is not right"),
+                        duration: Duration(seconds: 2),
                         action: SnackBarAction(label: "OK", onPressed: () {}),
                       ),
                     );
@@ -167,8 +167,8 @@ class _LandingState extends State<Landing> {
     );
   }
 
-  static Route<Object?> _exitBuilder(
-      BuildContext context, Object? arguments) {
+  static Route<Object?> _exitBuilder(BuildContext context, Object? arguments) {
+    String _warningEmoji = '\u26A0';
     return DialogRoute<void>(
       context: context,
       barrierDismissible: true,
@@ -197,21 +197,21 @@ class _LandingState extends State<Landing> {
         ),
         actions: [
           TextButton(
-              onPressed: (){
+              onPressed: () {
                 SystemNavigator.pop();
               },
-              child: Text("Yes, I'll quit",
+              child: Text(
+                "Yes, I'll quit",
                 style: TextStyle(fontSize: 18),
-              )
-          ),
+              )),
           TextButton(
-              onPressed: (){
+              onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("No, I'll stay",
+              child: Text(
+                "No, I'll stay",
                 style: TextStyle(fontSize: 18),
-              )
-          )
+              ))
         ],
       ),
     );
@@ -230,7 +230,7 @@ class _LandingState extends State<Landing> {
                 flex: 2,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 20.0),
+                      vertical: 8.0, horizontal: 15.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
@@ -378,7 +378,7 @@ class _LandingState extends State<Landing> {
                                   child: PortalPage(
                                       link:
                                           // "http://192.168.1.10:8085/mobile1iot?userId=$globaluserid"),
-                                          "http://184.105.174.77:8086/mobile1iot"),
+                                          "http://184.105.174.77:8086/login"),
                                 ),
                               );
                             },
@@ -500,8 +500,7 @@ class _LandingState extends State<Landing> {
                                 type: PageTransitionType.rightToLeftWithFade,
                                 alignment: Alignment.bottomCenter,
                                 child: PortalPage(
-                                    link:
-                                        "http://184.105.174.77:8086/login"),
+                                    link: "http://184.105.174.77:8086/mobile1iot"),
                               ));
                             },
                             child: Center(
@@ -719,11 +718,11 @@ class _LandingState extends State<Landing> {
                     ),
                     Positioned(
                       bottom: 15.0,
-                      left: 60.0,
-                      right: 60.0,
+                      left: 30.0,
+                      right: 30.0,
                       child: Container(
-                        // height: 20,
-                        // width: 20,
+                        height: 65,
+                        width: 40,
                         // decoration: BoxDecoration(
                         //   borderRadius: BorderRadius.circular(18),
                         //   boxShadow: <BoxShadow>[
@@ -764,60 +763,81 @@ class _LandingState extends State<Landing> {
                                   end: Alignment.bottomRight,
                                 ),
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10.0),
-                                    child: Row(
-                                      children: [
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    TextButton.icon(
+                                      icon: Icon(Icons.logout),
+                                      label: Text("Logout"),
+                                      style: TextButton.styleFrom(
+                                          primary: Colors.blueGrey),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .restorablePush(_logoutBuilder);
+                                      },
+                                    ),
+                                    TextButton.icon(
+                                      icon: Icon(Icons.person_outlined),
+                                      label: Text("User"),
+                                      style: TextButton.styleFrom(
+                                          primary: Colors.blueGrey),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .restorablePush(_userdialogBuilder);
+                                      },
+                                    ),
+                                    TextButton.icon(
+                                      icon: Icon(Icons.door_back_door_outlined),
+                                      label: Text('Exit'),
+                                      style: TextButton.styleFrom(
+                                          primary: Colors.blueGrey),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .restorablePush(_exitBuilder);
+                                      },
+                                    ),
+                                    Stack(
+                                      children: <Widget>[
                                         TextButton.icon(
-                                          icon: Icon(Icons.logout),
-                                          label: Text("Logout"),
-                                          style: TextButton.styleFrom(
-                                              primary: Colors.blueGrey),
-                                          onPressed: () {
-                                            Navigator.of(context)
-                                                .restorablePush(_logoutBuilder);
-                                          },
-                                        ),
-                                        VerticalDivider(
-                                          thickness: 50,
-                                          width: 1,
-                                          color: Colors.black12,
-                                        ),
-                                        TextButton.icon(
-                                          icon: Icon(Icons.person_outlined),
-                                          label: Text("User"),
-                                          style: TextButton.styleFrom(
-                                              primary: Colors.blueGrey),
-                                          onPressed: () {
-                                            Navigator.of(context)
-                                                .restorablePush(
-                                                _userdialogBuilder);
-                                          },
-                                        ),
-                                        VerticalDivider(
-                                          thickness: 50,
-                                          width: 1,
-                                          color: Colors.black12,
-                                        ),
-                                        TextButton.icon(
-                                          icon: Icon(
-                                              Icons.door_back_door_outlined),
-                                          label: Text('Exit'),
-                                          style: TextButton.styleFrom(
-                                              primary: Colors.blueGrey),
-                                          onPressed: () {
-                                            Navigator.of(context)
-                                                .restorablePush(_exitBuilder);
-                                          },
+                                            onPressed: () {},
+                                            //@TODO function to change the counter after certain interval
+                                            icon: Icon(
+                                                Icons.notifications_outlined),
+                                            label: Text('Alerts'),
+                                            style: TextButton.styleFrom(
+                                                primary: Colors.blueGrey)),
+                                        Positioned(
+                                          top: 7,
+                                          left: 21,
+                                          child: new Container(
+                                            padding: EdgeInsets.all(3),
+                                            decoration: new BoxDecoration(
+                                              color: Color(0xFFFF5722),
+                                              borderRadius:
+                                                  BorderRadius.circular(18),
+                                            ),
+                                            constraints: BoxConstraints(
+                                              minWidth: 15,
+                                              minHeight: 12,
+                                            ),
+                                            child: Text(
+                                              '50',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
                                         )
                                       ],
-                                    ),
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
