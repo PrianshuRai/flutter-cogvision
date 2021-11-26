@@ -274,268 +274,261 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 SizedBox(height: 50,),
-                Expanded(
-                  child: Stack(
-                    children: <Widget>[
-                      Positioned(
-                        top: 0.0,
-                        left: 10.0,
-                        right: 10.0,
-                        child: Container(
-                          padding: EdgeInsets.all(2),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(22)),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  color: Color(0xFF5C5EDD).withOpacity(0.6),
-                                  offset: const Offset(1.1, 4.0),
-                                  blurRadius: 8.0),
-                            ],
-                            gradient: LinearGradient(
-                              colors: <Color>[
-                                Color(0xFF738AE6),
-                                Color(0xFF5C5EDD),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                          ),
-                          // height: 400,
-                          child: AutofillGroup(
-                            child: Form(
-                              key: _globalKey,
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    TextFormField(
-                                      controller: _email,
-                                      keyboardType:
-                                          TextInputType.emailAddress,
-                                      style: GoogleFonts.lato(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .headline6,
-                                          color: Colors.blueGrey,
-                                          fontWeight: FontWeight.w500),
-                                      decoration: InputDecoration(
-                                        prefixIcon: Icon(
-                                          Icons.email_rounded,
-                                          color: Color(0xFF738AE6),
-                                        ),
-                                        labelText: "E-mail",
-                                        labelStyle: GoogleFonts.lato(
-                                            textStyle: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 20,
-                                            color: Color(0xFF738AE6)),
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        border: const OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(15.0),
-                                          ),
-                                        ),
-                                        enabledBorder:
-                                            const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(15.0),
-                                          ),
-                                        ),
-                                        focusedBorder: new OutlineInputBorder(
-                                          borderRadius:
-                                              new BorderRadius.circular(15.0),
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        floatingLabelStyle: GoogleFonts.lato(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 28,
-                                          color: Color(0xFF526EE0),
-                                        ),
-                                      ),
-                                      autofillHints: [AutofillHints.email],
-                                      validator: (value) {
-                                        // add your custom validation here.
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter some text';
-                                        }
-                                        if (value.length < 9) {
-                                          return 'Something is wrong here';
-                                        }
-                                        if (!value.contains('@') || !value.contains('.')) {
-                                          return "Email is incorrect";
-                                        }
-                                        return null;
-                                      },
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Container(
+                    padding: EdgeInsets.all(2),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(22)),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                            color: Color(0xFF5C5EDD).withOpacity(0.6),
+                            offset: const Offset(1.1, 4.0),
+                            blurRadius: 8.0),
+                      ],
+                      gradient: LinearGradient(
+                        colors: <Color>[
+                          Color(0xFF738AE6),
+                          Color(0xFF5C5EDD),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    // height: 400,
+                    child: AutofillGroup(
+                      child: Form(
+                        key: _globalKey,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              TextFormField(
+                                controller: _email,
+                                keyboardType:
+                                    TextInputType.emailAddress,
+                                style: GoogleFonts.lato(
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .headline6,
+                                    color: Colors.blueGrey,
+                                    fontWeight: FontWeight.w500),
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.email_rounded,
+                                    color: Color(0xFF738AE6),
+                                  ),
+                                  labelText: "E-mail",
+                                  labelStyle: GoogleFonts.lato(
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 20,
+                                      color: Color(0xFF738AE6)),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(15.0),
                                     ),
-                                    SizedBox(
-                                      height: 20,
+                                  ),
+                                  enabledBorder:
+                                      const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.transparent),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(15.0),
                                     ),
-                                    TextFormField(
-                                      controller: _password,
-                                      obscureText: visible,
-                                      style: GoogleFonts.lato(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .headline6,
-                                          color: Colors.blueGrey,
-                                          fontWeight: FontWeight.w500),
-                                      decoration: InputDecoration(
-                                        suffixIcon: IconButton(
-                                          icon: Icon(visible
-                                              ? Icons.visibility_off_rounded
-                                              : Icons.visibility_rounded),
-                                          onPressed: () {
-                                            setState(() {
-                                              visible = !visible;
-                                            });
-                                          },
-                                        ),
-                                        prefixIcon: Icon(
-                                          Icons.vpn_key_rounded,
-                                          color: Color(0xFF738AE6),
-                                        ),
-                                        labelText: "Password",
-                                        labelStyle: GoogleFonts.lato(
-                                            textStyle: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 20,
-                                            color: Color(0xFF738AE6)),
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        border: const OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(15.0),
-                                          ),
-                                        ),
-                                        enabledBorder:
-                                            const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(15.0),
-                                          ),
-                                        ),
-                                        focusedBorder: new OutlineInputBorder(
-                                          borderRadius:
-                                              new BorderRadius.circular(15.0),
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        floatingLabelStyle: GoogleFonts.lato(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 28,
-                                          color: Color(0xFF526EE0),
-                                        ),
-                                      ),
-                                      autofillHints: [AutofillHints.password],
-                                      onEditingComplete: () {
-                                        TextInput.finishAutofillContext();
-                                      },
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter password!';
-                                        }
-                                        if (value.length < 6) {
-                                          return "Password is too small to be secure!";
-                                        }
-                                        return null;
-                                      },
+                                  ),
+                                  focusedBorder: new OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(15.0),
+                                    borderSide: BorderSide(
+                                        color: Colors.transparent),
+                                  ),
+                                  floatingLabelStyle: GoogleFonts.lato(
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 28,
+                                    color: Color(0xFF526EE0),
+                                  ),
+                                ),
+                                autofillHints: [AutofillHints.email],
+                                validator: (value) {
+                                  // add your custom validation here.
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  if (value.length < 9) {
+                                    return 'Something is wrong here';
+                                  }
+                                  if (!value.contains('@') || !value.contains('.')) {
+                                    return "Email is incorrect";
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              TextFormField(
+                                controller: _password,
+                                obscureText: visible,
+                                style: GoogleFonts.lato(
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .headline6,
+                                    color: Colors.blueGrey,
+                                    fontWeight: FontWeight.w500),
+                                decoration: InputDecoration(
+                                  suffixIcon: IconButton(
+                                    icon: Icon(visible
+                                        ? Icons.visibility_off_rounded
+                                        : Icons.visibility_rounded),
+                                    onPressed: () {
+                                      setState(() {
+                                        visible = !visible;
+                                      });
+                                    },
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.vpn_key_rounded,
+                                    color: Color(0xFF738AE6),
+                                  ),
+                                  labelText: "Password",
+                                  labelStyle: GoogleFonts.lato(
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 20,
+                                      color: Color(0xFF738AE6)),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(15.0),
                                     ),
-                                    SizedBox(
-                                      height: 20,
+                                  ),
+                                  enabledBorder:
+                                      const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.transparent),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(15.0),
                                     ),
-                                    Text(
-                                      '$_errorMessage',
-                                      style: GoogleFonts.lato(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .bodyText2,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    ElevatedButton(
-                                      child: Text(
-                                        'Submit',
-                                        style: GoogleFonts.lato(
-                                            textStyle: Theme.of(context)
-                                                .textTheme
-                                                .headline6,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Color(0xFF738AE6),
-                                        onPrimary: Colors.blueGrey[900],
-                                        fixedSize: Size(
-                                            MediaQuery.of(context).size.width,
-                                            50),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(50)),
-                                      ),
-                                      onPressed: () async {
-                                        if (_globalKey.currentState!
-                                            .validate()) {
-                                          // setState(() async {
-                                          // _isLoading = true;
-                                          // _isLoading
-                                          //     ? showLoaderDialog(context)
-                                          //     : showErrorDialog(context);
-                                          // });
-                                          params['email'] =
-                                              _email.text.toLowerCase();
-                                          print(
-                                              'email saved ${params['email']}');
-                                          params['password'] = _password.text;
-                                          //  _GetId();
-                                          var device_id = await _getId();
-                                          params["device_id"] = device_id;
-                                          globalDeviceId = device_id;
-                                          print(
-                                              'device id---->>>>> $device_id updating params ${params['device_id']}');
-                                          print('you tapped button');
-                                          login();
-                                        } else {
-                                          print(
-                                              'Error... unable to connect to API');
-                                        }
-                                        // GetData();
-                                        // print("get data : $pr");
-                                      },
-                                    ),
-                                    // ElevatedButton(
-                                    //   child: Text('function check'),
-                                    //   onPressed: () {
-                                    //     newFun();
-                                    //   },
-                                    // ),
-                                  ],
+                                  ),
+                                  focusedBorder: new OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(15.0),
+                                    borderSide: BorderSide(
+                                        color: Colors.transparent),
+                                  ),
+                                  floatingLabelStyle: GoogleFonts.lato(
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 28,
+                                    color: Color(0xFF526EE0),
+                                  ),
+                                ),
+                                autofillHints: [AutofillHints.password],
+                                onEditingComplete: () {
+                                  TextInput.finishAutofillContext();
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter password!';
+                                  }
+                                  if (value.length < 6) {
+                                    return "Password is too small to be secure!";
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                '$_errorMessage',
+                                style: GoogleFonts.lato(
+                                  textStyle: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
-                            ),
+                              ElevatedButton(
+                                child: Text(
+                                  'Submit',
+                                  style: GoogleFonts.lato(
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .headline6,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xFF738AE6),
+                                  onPrimary: Colors.blueGrey[900],
+                                  fixedSize: Size(
+                                      MediaQuery.of(context).size.width,
+                                      50),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(50)),
+                                ),
+                                onPressed: () async {
+                                  if (_globalKey.currentState!
+                                      .validate()) {
+                                    // setState(() async {
+                                    // _isLoading = true;
+                                    // _isLoading
+                                    //     ? showLoaderDialog(context)
+                                    //     : showErrorDialog(context);
+                                    // });
+                                    params['email'] =
+                                        _email.text.toLowerCase();
+                                    print(
+                                        'email saved ${params['email']}');
+                                    params['password'] = _password.text;
+                                    //  _GetId();
+                                    var device_id = await _getId();
+                                    params["device_id"] = device_id;
+                                    globalDeviceId = device_id;
+                                    print(
+                                        'device id---->>>>> $device_id updating params ${params['device_id']}');
+                                    print('you tapped button');
+                                    login();
+                                  } else {
+                                    print(
+                                        'Error... unable to connect to API');
+                                  }
+                                  // GetData();
+                                  // print("get data : $pr");
+                                },
+                              ),
+                              // ElevatedButton(
+                              //   child: Text('function check'),
+                              //   onPressed: () {
+                              //     newFun();
+                              //   },
+                              // ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ],

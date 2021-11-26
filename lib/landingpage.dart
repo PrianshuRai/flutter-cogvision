@@ -22,6 +22,8 @@ class Landing extends StatefulWidget {
 }
 
 class _LandingState extends State<Landing> {
+  int _bellCounter = 0;
+
   static Route<Object?> _userdialogBuilder(
       BuildContext context, Object? arguments) {
     return DialogRoute<void>(
@@ -500,7 +502,8 @@ class _LandingState extends State<Landing> {
                                 type: PageTransitionType.rightToLeftWithFade,
                                 alignment: Alignment.bottomCenter,
                                 child: PortalPage(
-                                    link: "http://184.105.174.77:8086/mobile1iot"),
+                                    link:
+                                        "http://184.105.174.77:8086/mobile1iot"),
                               ));
                             },
                             child: Center(
@@ -786,8 +789,11 @@ class _LandingState extends State<Landing> {
                                       style: TextButton.styleFrom(
                                           primary: Colors.blueGrey),
                                       onPressed: () {
-                                        Navigator.of(context)
-                                            .restorablePush(_userdialogBuilder);
+                                        setState(() {
+                                          _bellCounter++;
+                                        });
+                                        // Navigator.of(context)
+                                        //     .restorablePush(_userdialogBuilder);
                                       },
                                     ),
                                     TextButton.icon(
@@ -803,37 +809,79 @@ class _LandingState extends State<Landing> {
                                     Stack(
                                       children: <Widget>[
                                         TextButton.icon(
-                                            onPressed: () {},
-                                            //@TODO function to change the counter after certain interval
+                                            onPressed: () {
+                                              setState(() {
+                                                _bellCounter = 0;
+                                              });
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                      "All alerts cleared... but can be seen on our portal",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                      fontSize: 16
+                                                    ),
+                                                  ),
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                ),
+                                              );
+                                            },
                                             icon: Icon(
                                                 Icons.notifications_outlined),
                                             label: Text('Alerts'),
                                             style: TextButton.styleFrom(
                                                 primary: Colors.blueGrey)),
-                                        Positioned(
-                                          top: 7,
-                                          left: 21,
-                                          child: new Container(
-                                            padding: EdgeInsets.all(3),
-                                            decoration: new BoxDecoration(
-                                              color: Color(0xFFFF5722),
-                                              borderRadius:
-                                                  BorderRadius.circular(18),
-                                            ),
-                                            constraints: BoxConstraints(
-                                              minWidth: 15,
-                                              minHeight: 12,
-                                            ),
-                                            child: Text(
-                                              '50',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        )
+                                        _bellCounter != 0
+                                            ? Positioned(
+                                                top: 7,
+                                                left: 21,
+                                                child: new Container(
+                                                  padding: EdgeInsets.all(3),
+                                                  decoration: new BoxDecoration(
+                                                    color: Color(0xFFFF5722),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            18),
+                                                  ),
+                                                  constraints: BoxConstraints(
+                                                    minWidth: 15,
+                                                    minHeight: 12,
+                                                  ),
+                                                  child: Text(
+                                                    '$_bellCounter',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              )
+                                            : new Padding(
+                                                padding: EdgeInsets.all(1))
+                                        //Container(
+                                        //   padding: EdgeInsets.all(3),
+                                        //   decoration: new BoxDecoration(
+                                        //     color: Colors.transparent,
+                                        //     borderRadius:
+                                        //     BorderRadius.circular(18),
+                                        //   ),
+                                        //   constraints: BoxConstraints(
+                                        //     minWidth: 15,
+                                        //     minHeight: 12,
+                                        //   ),
+                                        //   child: Text(
+                                        //     '0',
+                                        //     style: TextStyle(
+                                        //       color: Colors.transparent,
+                                        //       fontSize: 14,
+                                        //     ),
+                                        //     textAlign: TextAlign.center,
+                                        //   ),
+                                        // )
                                       ],
                                     )
                                   ],
