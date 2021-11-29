@@ -170,7 +170,6 @@ class _LandingState extends State<Landing> {
   }
 
   static Route<Object?> _exitBuilder(BuildContext context, Object? arguments) {
-    String _warningEmoji = '\u26A0';
     return DialogRoute<void>(
       context: context,
       barrierDismissible: true,
@@ -503,7 +502,7 @@ class _LandingState extends State<Landing> {
                                 alignment: Alignment.bottomCenter,
                                 child: PortalPage(
                                     link:
-                                        "http://184.105.174.77:8086/mobile1iot"),
+                                        "http://184.105.174.77:8086/mobile1iot?userId=$globaluserid"),
                               ));
                             },
                             child: Center(

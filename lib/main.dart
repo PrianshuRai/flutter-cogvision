@@ -20,6 +20,8 @@ void main() {
   );
 }
 
+
+// flutter build apk --split-per-abi
 // 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     (expiry: jan 2022)
 // you can find this project on https://github.com/PrianshuRai
 // to start the login, set - home: LoginPage()
