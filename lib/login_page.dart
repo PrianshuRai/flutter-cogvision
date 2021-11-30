@@ -13,7 +13,7 @@ import 'landingpage.dart';
 // unique id of the device
 var globaluserid = null;
 var globalDeviceId = null;
-bool loginStatus = false;
+bool loginStatus = true;
 bool face_reg_enable = true;
 
 // this class contains all visual elements of
@@ -650,21 +650,21 @@ dynamic spinkit = SpinKitFadingCube(
 //   );
 // }
 
-class customCard extends StatefulWidget {
-  @override
-  State<customCard> createState() => _customCardState();
-}
-
-class _customCardState extends State<customCard> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * .99,
-      color: Colors.transparent,
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        elevation: 1,
-      ),
-    );
-  }
-}
+// class customCard extends StatefulWidget {
+//   @override
+//   State<customCard> createState() => _customCardState();
+// }
+//
+// class _customCardState extends State<customCard> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: MediaQuery.of(context).size.width * .99,
+//       color: Colors.transparent,
+//       child: Card(
+//         clipBehavior: Clip.antiAlias,
+//         elevation: 1,
+//       ),
+//     );
+//   }
+// }

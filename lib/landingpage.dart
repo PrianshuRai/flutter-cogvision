@@ -788,11 +788,12 @@ class _LandingState extends State<Landing> {
                                       style: TextButton.styleFrom(
                                           primary: Colors.blueGrey),
                                       onPressed: () {
-                                        setState(() {
-                                          _bellCounter++;
-                                        });
+                                        // setState(() {
+                                        //   _bellCounter++;
+                                        // });
                                         // Navigator.of(context)
                                         //     .restorablePush(_userdialogBuilder);
+                                        showUserDialog(context);
                                       },
                                     ),
                                     TextButton.icon(
@@ -805,84 +806,7 @@ class _LandingState extends State<Landing> {
                                             .restorablePush(_exitBuilder);
                                       },
                                     ),
-                                    Stack(
-                                      children: <Widget>[
-                                        TextButton.icon(
-                                            onPressed: () {
-                                              setState(() {
-                                                _bellCounter = 0;
-                                              });
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                      "All alerts cleared... but can be seen on our portal",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                      fontSize: 16
-                                                    ),
-                                                  ),
-                                                  duration:
-                                                      Duration(seconds: 2),
-                                                ),
-                                              );
-                                            },
-                                            icon: Icon(
-                                                Icons.notifications_outlined),
-                                            label: Text('Alerts'),
-                                            style: TextButton.styleFrom(
-                                                primary: Colors.blueGrey)),
-                                        _bellCounter != 0
-                                            ? Positioned(
-                                                top: 7,
-                                                left: 21,
-                                                child: new Container(
-                                                  padding: EdgeInsets.all(3),
-                                                  decoration: new BoxDecoration(
-                                                    color: Color(0xFFFF5722),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            18),
-                                                  ),
-                                                  constraints: BoxConstraints(
-                                                    minWidth: 15,
-                                                    minHeight: 12,
-                                                  ),
-                                                  child: Text(
-                                                    '$_bellCounter',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 14,
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ),
-                                              )
-                                            : new Padding(
-                                                padding: EdgeInsets.all(1))
-                                        //Container(
-                                        //   padding: EdgeInsets.all(3),
-                                        //   decoration: new BoxDecoration(
-                                        //     color: Colors.transparent,
-                                        //     borderRadius:
-                                        //     BorderRadius.circular(18),
-                                        //   ),
-                                        //   constraints: BoxConstraints(
-                                        //     minWidth: 15,
-                                        //     minHeight: 12,
-                                        //   ),
-                                        //   child: Text(
-                                        //     '0',
-                                        //     style: TextStyle(
-                                        //       color: Colors.transparent,
-                                        //       fontSize: 14,
-                                        //     ),
-                                        //     textAlign: TextAlign.center,
-                                        //   ),
-                                        // )
-                                      ],
-                                    )
+                                    AlertCounter(),
                                   ],
                                 ),
                               ),
@@ -902,34 +826,155 @@ class _LandingState extends State<Landing> {
   }
 }
 
-// Future<dynamic> logout() async {
-//   Uri base_url = Uri.parse("http://192.168.1.8:5020/users/logout_mobile");
-//   var response = await http.post(base_url,
-//       body: {"userId": globaluserid, "device_id": globalDeviceId});
-//
-//   if (response.statusCode == 200) {
-//     Map<String, dynamic> data = jsonDecode(response.body);
-//     if (data.keys.contains("success")) {
-//       Navigator.push(
-//           context, MaterialPageRoute(builder: (context) => LoginPage()));
-//     } else if (data.keys.contains("error")) {
-//       Navigator.of(context).pop();
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(
-//           content: Text("Can not logout, Error: ${data["error"]}"),
-//           duration: Duration(seconds: 1),
-//           action: SnackBarAction(label: "OK", onPressed: () {}),
-//         ),
-//       );
-//     }
-//   } else {
-//     Navigator.of(context).pop();
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       SnackBar(
-//         content: Text("Unable to connect... Check network]}"),
-//         duration: Duration(seconds: 1),
-//         action: SnackBarAction(label: "OK", onPressed: () {}),
-//       ),
-//     );
-//   }
-// }
+showUserDialog(BuildContext context) {
+  AlertDialog alert = AlertDialog(
+    title: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Icon(Icons.person_rounded,
+          color: Colors.transparent,
+        ),
+        CircleAvatar(
+          backgroundColor: Colors.white70,
+          backgroundImage: AssetImage('assets/images/icon.png'),
+        ),
+        IconButton(onPressed: (){}, icon: Icon(Icons.person))
+      ],
+    ),
+    content: ListView.builder(
+        itemBuilder: (BuildContext context, int index){
+      return ListTile(
+        title: Text('something')
+      );
+    }),
+    actions: [
+      TextButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Text('OK'),
+      )
+    ],
+  );
+  showDialog(
+    barrierDismissible: true,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+class customCard extends StatefulWidget {
+  @override
+  State<customCard> createState() => _customCardState();
+}
+
+class _customCardState extends State<customCard> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * .99,
+      color: Colors.transparent,
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        elevation: 1,
+      ),
+    );
+  }
+}
+
+// bottom menu alert button
+class AlertCounter extends StatefulWidget {
+  const AlertCounter({Key? key}) : super(key: key);
+
+  @override
+  _AlertCounterState createState() => _AlertCounterState();
+}
+
+class _AlertCounterState extends State<AlertCounter> {
+  int _bellCounter = 0;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        TextButton.icon(
+            onPressed: () {
+              setState(() {
+                _bellCounter = 0;
+              });
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(
+                SnackBar(
+                  content: Text(
+                    "All alerts cleared... but can be seen on our portal",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16
+                    ),
+                  ),
+                  duration:
+                  Duration(seconds: 2),
+                ),
+              );
+            },
+            icon: Icon(
+                Icons.notifications_outlined),
+            label: Text('Alerts'),
+            style: TextButton.styleFrom(
+                primary: Colors.blueGrey)),
+        _bellCounter != 0
+            ? Positioned(
+          top: 7,
+          left: 21,
+          child: new Container(
+            padding: EdgeInsets.all(3),
+            decoration: new BoxDecoration(
+              color: Color(0xFFFF5722),
+              borderRadius:
+              BorderRadius.circular(
+                  18),
+            ),
+            constraints: BoxConstraints(
+              minWidth: 15,
+              minHeight: 12,
+            ),
+            child: Text(
+              '$_bellCounter',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        )
+            : new Padding(
+            padding: EdgeInsets.all(1))
+        //Container(
+        //   padding: EdgeInsets.all(3),
+        //   decoration: new BoxDecoration(
+        //     color: Colors.transparent,
+        //     borderRadius:
+        //     BorderRadius.circular(18),
+        //   ),
+        //   constraints: BoxConstraints(
+        //     minWidth: 15,
+        //     minHeight: 12,
+        //   ),
+        //   child: Text(
+        //     '0',
+        //     style: TextStyle(
+        //       color: Colors.transparent,
+        //       fontSize: 14,
+        //     ),
+        //     textAlign: TextAlign.center,
+        //   ),
+        // )
+      ],
+    )
+    ;
+  }
+}
+
