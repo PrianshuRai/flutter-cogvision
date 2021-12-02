@@ -13,8 +13,29 @@ import 'landingpage.dart';
 // unique id of the device
 var globaluserid = null;
 var globalDeviceId = null;
-bool loginStatus = true;
+bool loginStatus = false;
 bool face_reg_enable = true;
+
+// user details
+// to be filled after login
+Map<String, dynamic> userDetails = {
+  "First Name":"",
+  "Last Name":"",
+  "User ID":"",
+  "E-mail":"",
+  "Department":"",
+  "Role":"",
+};
+// {"role": "admin",
+// "email": "aditya.g.upadhyaya@gmail.com",
+// "department": "management",
+// "last_name": "G",
+// "title": "",
+// "verified": "NA",
+// "userId": "adityaacb4b",
+// "first_name": "Aditya",
+// "license": "D:/cogxar/node/node_projects/VideoAnalytics/public/licenses/0x1803737ce308.lic",
+// "licenseRequest": "requested"}
 
 // this class contains all visual elements of
 // login page
@@ -29,9 +50,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   // value for password visibility on password input page
   bool visible = true;
-
-  // this text field shows the error msg on login screen
-  String _errorMsg = '';
 
   // loading indicator value
 
@@ -124,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
       builder: (BuildContext context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         insetPadding: EdgeInsets.all(15),
-        content: Text(
+        title: Text(
           'ERROR! ❌',
           textAlign: TextAlign.center,
           style: GoogleFonts.lato(
@@ -134,6 +152,8 @@ class _LoginPageState extends State<LoginPage> {
             fontWeight: FontWeight.w700,
           ),
         ),
+        content: Text('Display error message}'),
+        // @TODO: show error msg here
         actions: [
           TextButton(
             onPressed: () {
@@ -176,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
 
     String base_url =
         // "http://192.168.1.10:5020/users/login1"; //"http://192.168.1.10:5020/users/login1";
-    "http://184.105.174.77:5021/login1";
+        "http://184.105.174.77:5021/login1";
     var response =
         await http.post(Uri.parse(base_url), body: jsonEncode(params));
     print('params: $params');
@@ -199,23 +219,37 @@ class _LoginPageState extends State<LoginPage> {
             "global device id: ${params['device_id']} and global username: $globaluserid");
         loginStatus = true;
         print("login status: $loginStatus");
+        print('the whole data is $data');
+        int index = 0;
+        Map<String, dynamic> newNames = {
+          "first_name": "",
+          "last_name": "",
+          "userId": "",
+          "email": "",
+          "department": "",
+          "role": "",
+        };
+        for (String item in newNames.keys) {
+          newNames[item] = data[item];
+        }
+        List<dynamic> nameValues = newNames.values.toList();
+        int counter = 0;
+        for (String item in userDetails.keys){
+          userDetails[item] = nameValues[counter];
+          counter++;
+        }
+        print("user details updated >>> $userDetails");
         Navigator.of(context).restorablePush(_successBuilder);
       } else if (data.keys.length <= 1) {
         print('in else block');
         try {
           print('in try block');
           if (data.containsKey("error")) {
-            Navigator.of(context).restorablePush(_errorBuilder);
+            print('error message is ---- ${data['error']}');
+            String errorMsg = data['error'].toString();
+            Navigator.of(context)
+                .restorablePush(_errorBuilder, arguments: errorMsg);
             print('contains error');
-            // setState(() {
-            //   _errorMessage = error_flag[data['error']];
-            //   // if (_errorMessage.isEmpty) {
-            //   //   _errorMessage = error_flag[data["error"]];
-            //   // } else {
-            //   //   _errorMessage = "something is not correct";
-            //   // }
-            // });
-            print('flag changed');
           } else {
             print("second else block");
             _errorMessage = 'error';
@@ -276,15 +310,16 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                SizedBox(height: 50,),
+                SizedBox(
+                  height: 50,
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Container(
                     padding: EdgeInsets.all(2),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(22)),
+                      borderRadius: BorderRadius.all(Radius.circular(22)),
                       boxShadow: <BoxShadow>[
                         BoxShadow(
                             color: Color(0xFF5C5EDD).withOpacity(0.6),
@@ -311,12 +346,10 @@ class _LoginPageState extends State<LoginPage> {
                             children: <Widget>[
                               TextFormField(
                                 controller: _email,
-                                keyboardType:
-                                    TextInputType.emailAddress,
+                                keyboardType: TextInputType.emailAddress,
                                 style: GoogleFonts.lato(
-                                    textStyle: Theme.of(context)
-                                        .textTheme
-                                        .headline6,
+                                    textStyle:
+                                        Theme.of(context).textTheme.headline6,
                                     color: Colors.blueGrey,
                                     fontWeight: FontWeight.w500),
                                 decoration: InputDecoration(
@@ -326,9 +359,8 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   labelText: "E-mail",
                                   labelStyle: GoogleFonts.lato(
-                                      textStyle: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2,
+                                      textStyle:
+                                          Theme.of(context).textTheme.bodyText2,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 20,
                                       color: Color(0xFF738AE6)),
@@ -339,10 +371,9 @@ class _LoginPageState extends State<LoginPage> {
                                       Radius.circular(15.0),
                                     ),
                                   ),
-                                  enabledBorder:
-                                      const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.transparent),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.transparent),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(15.0),
                                     ),
@@ -350,13 +381,12 @@ class _LoginPageState extends State<LoginPage> {
                                   focusedBorder: new OutlineInputBorder(
                                     borderRadius:
                                         new BorderRadius.circular(15.0),
-                                    borderSide: BorderSide(
-                                        color: Colors.transparent),
+                                    borderSide:
+                                        BorderSide(color: Colors.transparent),
                                   ),
                                   floatingLabelStyle: GoogleFonts.lato(
-                                    textStyle: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2,
+                                    textStyle:
+                                        Theme.of(context).textTheme.bodyText2,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 28,
                                     color: Color(0xFF526EE0),
@@ -371,7 +401,8 @@ class _LoginPageState extends State<LoginPage> {
                                   if (value.length < 9) {
                                     return 'Something is wrong here';
                                   }
-                                  if (!value.contains('@') || !value.contains('.')) {
+                                  if (!value.contains('@') ||
+                                      !value.contains('.')) {
                                     return "Email is incorrect";
                                   }
                                   return null;
@@ -384,9 +415,8 @@ class _LoginPageState extends State<LoginPage> {
                                 controller: _password,
                                 obscureText: visible,
                                 style: GoogleFonts.lato(
-                                    textStyle: Theme.of(context)
-                                        .textTheme
-                                        .headline6,
+                                    textStyle:
+                                        Theme.of(context).textTheme.headline6,
                                     color: Colors.blueGrey,
                                     fontWeight: FontWeight.w500),
                                 decoration: InputDecoration(
@@ -406,9 +436,8 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   labelText: "Password",
                                   labelStyle: GoogleFonts.lato(
-                                      textStyle: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2,
+                                      textStyle:
+                                          Theme.of(context).textTheme.bodyText2,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 20,
                                       color: Color(0xFF738AE6)),
@@ -419,10 +448,9 @@ class _LoginPageState extends State<LoginPage> {
                                       Radius.circular(15.0),
                                     ),
                                   ),
-                                  enabledBorder:
-                                      const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.transparent),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.transparent),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(15.0),
                                     ),
@@ -430,13 +458,12 @@ class _LoginPageState extends State<LoginPage> {
                                   focusedBorder: new OutlineInputBorder(
                                     borderRadius:
                                         new BorderRadius.circular(15.0),
-                                    borderSide: BorderSide(
-                                        color: Colors.transparent),
+                                    borderSide:
+                                        BorderSide(color: Colors.transparent),
                                   ),
                                   floatingLabelStyle: GoogleFonts.lato(
-                                    textStyle: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2,
+                                    textStyle:
+                                        Theme.of(context).textTheme.bodyText2,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 28,
                                     color: Color(0xFF526EE0),
@@ -459,22 +486,12 @@ class _LoginPageState extends State<LoginPage> {
                               SizedBox(
                                 height: 20,
                               ),
-                              Text(
-                                '$_errorMessage',
-                                style: GoogleFonts.lato(
-                                  textStyle: Theme.of(context)
-                                      .textTheme
-                                      .bodyText2,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
                               ElevatedButton(
                                 child: Text(
                                   'Submit',
                                   style: GoogleFonts.lato(
-                                      textStyle: Theme.of(context)
-                                          .textTheme
-                                          .headline6,
+                                      textStyle:
+                                          Theme.of(context).textTheme.headline6,
                                       color: Colors.white,
                                       fontWeight: FontWeight.w700),
                                 ),
@@ -482,25 +499,20 @@ class _LoginPageState extends State<LoginPage> {
                                   primary: Color(0xFF738AE6),
                                   onPrimary: Colors.blueGrey[900],
                                   fixedSize: Size(
-                                      MediaQuery.of(context).size.width,
-                                      50),
+                                      MediaQuery.of(context).size.width, 50),
                                   shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(50)),
+                                      borderRadius: BorderRadius.circular(50)),
                                 ),
                                 onPressed: () async {
-                                  if (_globalKey.currentState!
-                                      .validate()) {
+                                  if (_globalKey.currentState!.validate()) {
                                     // setState(() async {
                                     // _isLoading = true;
                                     // _isLoading
                                     //     ? showLoaderDialog(context)
                                     //     : showErrorDialog(context);
                                     // });
-                                    params['email'] =
-                                        _email.text.toLowerCase();
-                                    print(
-                                        'email saved ${params['email']}');
+                                    params['email'] = _email.text.toLowerCase();
+                                    print('email saved ${params['email']}');
                                     params['password'] = _password.text;
                                     //  _GetId();
                                     var device_id = await _getId();
@@ -511,8 +523,7 @@ class _LoginPageState extends State<LoginPage> {
                                     print('you tapped button');
                                     login();
                                   } else {
-                                    print(
-                                        'Error... unable to connect to API');
+                                    print('Error... unable to connect to API');
                                   }
                                   // GetData();
                                   // print("get data : $pr");
@@ -548,15 +559,6 @@ Future<String?> _getId() async {
   // params['device_id'] = androidInfo.androidId.toString();
   return androidInfo.androidId;
 }
-
-// error flags received from the API call
-// during error, don't change without matching
-// from the other end (API).
-Map<int, dynamic> error_flag = {
-  1: "User is already logged-in somewhere",
-  2: "Invalid E-Mail or password",
-  3: "No result found"
-};
 
 // loading indicator
 // showExitDialog(BuildContext context) {

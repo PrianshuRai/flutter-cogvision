@@ -33,29 +33,28 @@ class _LandingState extends State<Landing> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         insetPadding: EdgeInsets.all(15),
         // backgroundColor: Colors.transparent,
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
+        content: Stack(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text(
-                    "Prianshu",
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                  CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/icon.png'),
-                  )
-                ],
+            Text(
+              'Hi! ${userDetails["first_name"]}',
+              style: GoogleFonts.lato(
+                textStyle: Theme.of(context).textTheme.headline4,
+                color: Colors.black54,
+                // fontSize: 22,
+                fontWeight: FontWeight.w700,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(''), // user information goes here
-            )
+            ListView.builder(
+                itemCount: userDetails.length,
+                itemBuilder: (BuildContext context, int index) {
+                  String key = userDetails.keys.elementAt(index);
+                  return Card(
+                    child: ListTile(
+                      title: Text('$key'),
+                      subtitle: Text(userDetails[key]),
+                    ),
+                  );
+                })
           ],
         ),
       ),
@@ -828,25 +827,61 @@ class _LandingState extends State<Landing> {
 
 showUserDialog(BuildContext context) {
   AlertDialog alert = AlertDialog(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+    actionsAlignment: MainAxisAlignment.center,
     title: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Icon(Icons.person_rounded,
-          color: Colors.transparent,
-        ),
         CircleAvatar(
+          radius: 14,
           backgroundColor: Colors.white70,
           backgroundImage: AssetImage('assets/images/icon.png'),
         ),
-        IconButton(onPressed: (){}, icon: Icon(Icons.person))
+        SizedBox(width: 20,),
+        Text(
+          'Hi! ${userDetails["first_name"]}',
+          style: GoogleFonts.lato(
+            textStyle: Theme.of(context).textTheme.headline4,
+            color: Colors.black54,
+            // fontSize: 22,
+            fontWeight: FontWeight.w700,
+          ),
+        )
       ],
     ),
-    content: ListView.builder(
-        itemBuilder: (BuildContext context, int index){
-      return ListTile(
-        title: Text('something')
-      );
-    }),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Container(
+          height: 400.0,
+          width: 400.0,
+          child: ListView.builder(
+            shrinkWrap: true,
+              itemCount: userDetails.length,
+              itemBuilder: (BuildContext context, int index) {
+                String key = userDetails.keys.elementAt(index);
+                return Card(
+                  child: ListTile(
+                    title: Text('$key: ', style: GoogleFonts.lato(
+                      textStyle: Theme.of(context).textTheme.headline6,
+                      fontSize: 18,
+                      color: Colors.black54,
+                      // fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                    ),),
+                    subtitle: Text(userDetails[key], style: GoogleFonts.lato(
+                      textStyle: Theme.of(context).textTheme.caption,
+                      fontSize: 18,
+                      color: Colors.black54,
+                      // fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                    ),),
+                  ),
+                );
+              }),
+        ),
+      ],
+    ),
     actions: [
       TextButton(
         onPressed: () {
@@ -865,25 +900,6 @@ showUserDialog(BuildContext context) {
   );
 }
 
-class customCard extends StatefulWidget {
-  @override
-  State<customCard> createState() => _customCardState();
-}
-
-class _customCardState extends State<customCard> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * .99,
-      color: Colors.transparent,
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        elevation: 1,
-      ),
-    );
-  }
-}
-
 // bottom menu alert button
 class AlertCounter extends StatefulWidget {
   const AlertCounter({Key? key}) : super(key: key);
@@ -894,6 +910,7 @@ class AlertCounter extends StatefulWidget {
 
 class _AlertCounterState extends State<AlertCounter> {
   int _bellCounter = 0;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -903,55 +920,45 @@ class _AlertCounterState extends State<AlertCounter> {
               setState(() {
                 _bellCounter = 0;
               });
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
                     "All alerts cleared... but can be seen on our portal",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16
-                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
-                  duration:
-                  Duration(seconds: 2),
+                  duration: Duration(seconds: 2),
                 ),
               );
             },
-            icon: Icon(
-                Icons.notifications_outlined),
+            icon: Icon(Icons.notifications_outlined),
             label: Text('Alerts'),
-            style: TextButton.styleFrom(
-                primary: Colors.blueGrey)),
+            style: TextButton.styleFrom(primary: Colors.blueGrey)),
         _bellCounter != 0
             ? Positioned(
-          top: 7,
-          left: 21,
-          child: new Container(
-            padding: EdgeInsets.all(3),
-            decoration: new BoxDecoration(
-              color: Color(0xFFFF5722),
-              borderRadius:
-              BorderRadius.circular(
-                  18),
-            ),
-            constraints: BoxConstraints(
-              minWidth: 15,
-              minHeight: 12,
-            ),
-            child: Text(
-              '$_bellCounter',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        )
-            : new Padding(
-            padding: EdgeInsets.all(1))
+                top: 7,
+                left: 21,
+                child: new Container(
+                  padding: EdgeInsets.all(3),
+                  decoration: new BoxDecoration(
+                    color: Color(0xFFFF5722),
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  constraints: BoxConstraints(
+                    minWidth: 15,
+                    minHeight: 12,
+                  ),
+                  child: Text(
+                    '$_bellCounter',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              )
+            : new Padding(padding: EdgeInsets.all(1))
         //Container(
         //   padding: EdgeInsets.all(3),
         //   decoration: new BoxDecoration(
@@ -973,8 +980,6 @@ class _AlertCounterState extends State<AlertCounter> {
         //   ),
         // )
       ],
-    )
-    ;
+    );
   }
 }
-
