@@ -839,7 +839,7 @@ showUserDialog(BuildContext context) {
         ),
         SizedBox(width: 20,),
         Text(
-          'Hi! ${userDetails["first_name"]}',
+          'Hi! ${userDetails["First Name"]}',
           style: GoogleFonts.lato(
             textStyle: Theme.of(context).textTheme.headline4,
             color: Colors.black54,
@@ -861,6 +861,8 @@ showUserDialog(BuildContext context) {
               itemBuilder: (BuildContext context, int index) {
                 String key = userDetails.keys.elementAt(index);
                 return Card(
+                  color: Colors.white,
+                  elevation: 2,
                   child: ListTile(
                     title: Text('$key: ', style: GoogleFonts.lato(
                       textStyle: Theme.of(context).textTheme.headline6,
@@ -883,11 +885,19 @@ showUserDialog(BuildContext context) {
       ],
     ),
     actions: [
-      TextButton(
+      // call support functionality
+
+      // IconButton(
+      //   onPressed: () {
+      //     Navigator.pop(context);
+      //   },
+      //   icon: Icon(Icons.support_agent_rounded, color: Colors.black38,),
+      // ),
+      IconButton(
         onPressed: () {
           Navigator.pop(context);
         },
-        child: Text('OK'),
+        icon: Icon(Icons.close_rounded, color: Colors.black38,),
       )
     ],
   );

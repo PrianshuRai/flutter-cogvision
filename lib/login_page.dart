@@ -13,7 +13,7 @@ import 'landingpage.dart';
 // unique id of the device
 var globaluserid = null;
 var globalDeviceId = null;
-bool loginStatus = false;
+bool loginStatus = true;
 bool face_reg_enable = true;
 
 // user details
