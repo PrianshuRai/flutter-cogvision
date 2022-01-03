@@ -11,7 +11,6 @@ import 'package:page_transition/page_transition.dart';
 import './MainPage.dart';
 import './inputs_page.dart';
 import './web_view_page.dart';
-import 'face_reg.dart';
 import 'login_page.dart';
 
 class Landing extends StatefulWidget {
@@ -24,6 +23,9 @@ class Landing extends StatefulWidget {
 class _LandingState extends State<Landing> {
   int _bellCounter = 0;
 
+  // this is a test function
+  // but before removing it please check
+  // function call properly
   static Route<Object?> _userdialogBuilder(
       BuildContext context, Object? arguments) {
     return DialogRoute<void>(
@@ -362,20 +364,12 @@ class _LandingState extends State<Landing> {
                           child: InkWell(
                             splashColor: Colors.blue.withAlpha(30),
                             onTap: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => PortalPage(
-                              //             link:
-                              //                 "http://192.168.1.10:8085/mobile1iot?userId=$globaluserid"
-                              //         ),
-                              //     ),
-                              // );
                               Navigator.of(context).push(
                                 PageTransition(
                                   type: PageTransitionType.rightToLeftWithFade,
                                   alignment: Alignment.bottomCenter,
                                   child: PortalPage(
+                                      // put the URL here
                                       link:
                                           // "http://192.168.1.10:8085/mobile1iot?userId=$globaluserid"),
                                           "http://184.105.174.77:8086/login"),
@@ -395,7 +389,7 @@ class _LandingState extends State<Landing> {
                                     ),
                                   ),
                                   Text(
-                                    'Web View',
+                                    'Web View', // change name of the tile
                                     style: GoogleFonts.lato(
                                         textStyle: Theme.of(context)
                                             .textTheme
@@ -440,6 +434,7 @@ class _LandingState extends State<Landing> {
                                 type: PageTransitionType.rightToLeftWithFade,
                                 alignment: Alignment.bottomCenter,
                                 child: PortalPage(
+                                    // put the URL here
                                     link:
                                         "http://184.105.174.77:8086/mobile2report"),
                               ));
@@ -500,6 +495,7 @@ class _LandingState extends State<Landing> {
                                 type: PageTransitionType.rightToLeftWithFade,
                                 alignment: Alignment.bottomCenter,
                                 child: PortalPage(
+                                    // put the URL here
                                     link:
                                         "http://184.105.174.77:8086/mobile1iot?userId=$globaluserid"),
                               ));
@@ -559,8 +555,9 @@ class _LandingState extends State<Landing> {
                               Navigator.of(context).push(PageTransition(
                                 type: PageTransitionType.rightToLeftWithFade,
                                 alignment: Alignment.bottomCenter,
-                                child:
-                                    PortalPage(link: "https://www.mozilla.com"),
+                                child: PortalPage(
+                                    // put the URL here
+                                    link: "http://www.cogvision.ai/about-us/"),
                               ));
                             },
                             child: Center(
@@ -657,64 +654,64 @@ class _LandingState extends State<Landing> {
                             ),
                           ),
                         ),
-                        Card(
-                          color: Colors.red[50],
-                          clipBehavior: Clip.antiAlias,
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          child: InkWell(
-                            splashColor: Colors.red.withAlpha(30),
-                            onTap: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => PortalPage(
-                              //             link: 'https://www.google.com/')));
-                              Navigator.of(context).push(PageTransition(
-                                type: PageTransitionType.rightToLeftWithFade,
-                                alignment: Alignment.bottomCenter,
-                                child: FaceReg(),
-                              ));
-                            },
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(
-                                      'assets/images/faceScanner.png',
-                                      height: 60,
-                                      width: 60,
-                                    ),
-                                  ),
-                                  Text(
-                                    'FRS',
-                                    style: GoogleFonts.lato(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .headline5,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  Text(
-                                    'Face Registration system',
-                                    style: GoogleFonts.lato(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Card(
+                        //   color: Colors.red[50],
+                        //   clipBehavior: Clip.antiAlias,
+                        //   elevation: 5,
+                        //   shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(18),
+                        //   ),
+                        //   child: InkWell(
+                        //     splashColor: Colors.red.withAlpha(30),
+                        //     onTap: () {
+                        //       // Navigator.push(
+                        //       //     context,
+                        //       //     MaterialPageRoute(
+                        //       //         builder: (context) => PortalPage(
+                        //       //             link: 'https://www.google.com/')));
+                        //       Navigator.of(context).push(PageTransition(
+                        //         type: PageTransitionType.rightToLeftWithFade,
+                        //         alignment: Alignment.bottomCenter,
+                        //         child: FaceReg(),
+                        //       ));
+                        //     },
+                        //     child: Center(
+                        //       child: Column(
+                        //         mainAxisAlignment: MainAxisAlignment.center,
+                        //         children: <Widget>[
+                        //           Padding(
+                        //             padding: const EdgeInsets.all(8.0),
+                        //             child: Image.asset(
+                        //               'assets/images/faceScanner.png',
+                        //               height: 60,
+                        //               width: 60,
+                        //             ),
+                        //           ),
+                        //           Text(
+                        //             'FRS',
+                        //             style: GoogleFonts.lato(
+                        //                 textStyle: Theme.of(context)
+                        //                     .textTheme
+                        //                     .headline5,
+                        //                 fontWeight: FontWeight.w500),
+                        //           ),
+                        //           SizedBox(
+                        //             height: 15,
+                        //           ),
+                        //           Text(
+                        //             'Face Registration system',
+                        //             style: GoogleFonts.lato(
+                        //                 textStyle: Theme.of(context)
+                        //                     .textTheme
+                        //                     .subtitle2,
+                        //                 fontSize: 15,
+                        //                 fontWeight: FontWeight.w400),
+                        //           )
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                     Positioned(
@@ -825,6 +822,10 @@ class _LandingState extends State<Landing> {
   }
 }
 
+
+// Test dialog do not remove it
+// if necessary to remove please make changes in
+// login_page.dart and new_test.dart files
 showUserDialog(BuildContext context) {
   AlertDialog alert = AlertDialog(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
@@ -832,12 +833,23 @@ showUserDialog(BuildContext context) {
     title: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        CircleAvatar(
-          radius: 14,
-          backgroundColor: Colors.white70,
-          backgroundImage: AssetImage('assets/images/icon.png'),
+        InkWell(
+          onLongPress: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("This app was made by Prianshu Rai for CogvisionAI"),
+              ),
+            );
+          },
+          child: CircleAvatar(
+            radius: 14,
+            backgroundColor: Colors.white70,
+            backgroundImage: AssetImage('assets/images/icon.png'),
+          ),
         ),
-        SizedBox(width: 20,),
+        SizedBox(
+          width: 20,
+        ),
         Text(
           'Hi! ${userDetails["First Name"]}',
           style: GoogleFonts.lato(
@@ -856,7 +868,7 @@ showUserDialog(BuildContext context) {
           height: 400.0,
           width: 400.0,
           child: ListView.builder(
-            shrinkWrap: true,
+              shrinkWrap: true,
               itemCount: userDetails.length,
               itemBuilder: (BuildContext context, int index) {
                 String key = userDetails.keys.elementAt(index);
@@ -864,20 +876,26 @@ showUserDialog(BuildContext context) {
                   color: Colors.white,
                   elevation: 2,
                   child: ListTile(
-                    title: Text('$key: ', style: GoogleFonts.lato(
-                      textStyle: Theme.of(context).textTheme.headline6,
-                      fontSize: 18,
-                      color: Colors.black54,
-                      // fontSize: 22,
-                      fontWeight: FontWeight.w700,
-                    ),),
-                    subtitle: Text(userDetails[key], style: GoogleFonts.lato(
-                      textStyle: Theme.of(context).textTheme.caption,
-                      fontSize: 18,
-                      color: Colors.black54,
-                      // fontSize: 22,
-                      fontWeight: FontWeight.w600,
-                    ),),
+                    title: Text(
+                      '$key: ',
+                      style: GoogleFonts.lato(
+                        textStyle: Theme.of(context).textTheme.headline6,
+                        fontSize: 18,
+                        color: Colors.black54,
+                        // fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    subtitle: Text(
+                      userDetails[key],
+                      style: GoogleFonts.lato(
+                        textStyle: Theme.of(context).textTheme.caption,
+                        fontSize: 18,
+                        color: Colors.black54,
+                        // fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                 );
               }),
@@ -897,7 +915,10 @@ showUserDialog(BuildContext context) {
         onPressed: () {
           Navigator.pop(context);
         },
-        icon: Icon(Icons.close_rounded, color: Colors.black38,),
+        icon: Icon(
+          Icons.close_rounded,
+          color: Colors.black38,
+        ),
       )
     ],
   );
